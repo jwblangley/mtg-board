@@ -2,7 +2,7 @@ import React from 'react'
 import { useDrop } from 'react-dnd'
 
 import Card from "./card"
-import { DraggableTypes } from './constants'
+import { CARD_WIDTH, CARD_HEIGHT, DraggableTypes, STACK_MAX, STACK_OFFSET } from './constants'
 
 const Cell = ({content, i, j}) => {
     const [{isOver}, drop] = useDrop(
@@ -17,22 +17,29 @@ const Cell = ({content, i, j}) => {
 
 
     return (
-        <div className="battlefieldCell" ref={drop}>
+        <div
+            className="battlefieldCell"
+            ref={drop}
+            style={{
+                width: CARD_WIDTH + STACK_OFFSET * STACK_MAX,
+                height: CARD_HEIGHT + STACK_OFFSET * STACK_MAX
+            }}
+        >
             {isOver && (
                 <div
                     style={{
                         position: 'absolute',
                         top: 0,
                         left: 0,
-                        height: '100%',
-                        width: '100%',
-                        zIndex: 2,
+                        width:"100%",
+                        height:"100%",
+                        zIndex: 99,
                         opacity: 0.5,
                         backgroundColor: 'yellow',
                     }}
                 />
             )}
-            {content.map(card => (<Card key={card.id}/>))}
+            {content.map((card, stackIndex) => (<Card key={card.id} stackIndex={stackIndex} stackTotal={content.length}/>))}
         </div>
     )
 }

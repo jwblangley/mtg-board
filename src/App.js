@@ -20,7 +20,13 @@ const App = () => {
 
   // Set up test content
   const testContent = generateEmptyBattlefield(battlefieldWidth, battlefieldHeight)
-  testContent[0][0] = [{ id: "abc" }]
+  testContent[0][0] = [
+    {id: "a"},
+    {id: "b"},
+    {id: "c"},
+    {id: "d"},
+    {id: "e"}
+  ]
   useEffect(() => {
     setBattlefieldContent(testContent)
   }, [])

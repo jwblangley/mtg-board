@@ -1,9 +1,9 @@
 import ranar from "./Ranar the Ever-Watchful-khc-2.png"
 
 import { useDrag } from 'react-dnd'
-import { DraggableTypes } from "./constants";
+import { CARD_WIDTH, CARD_HEIGHT, STACK_OFFSET, STACK_MAX, DraggableTypes } from "./constants";
 
-const Card = () => {
+const Card = ({stackIndex, stackTotal}) => {
     const [{ isDragging }, drag] = useDrag(() => ({
         type: DraggableTypes.CARD,
         collect: monitor => ({
@@ -11,12 +11,16 @@ const Card = () => {
         }),
     }))
 
-
     return (
         <div
             ref={drag}
             style={{
-                opacity: isDragging ? 0.5 : 1
+                width: CARD_WIDTH,
+                height: CARD_HEIGHT,
+                top: `${STACK_OFFSET / 2 + (STACK_MAX - stackTotal) * (STACK_OFFSET / 2) + (STACK_OFFSET * stackIndex)}px`,
+                left: `${STACK_OFFSET / 2 + (STACK_MAX - stackTotal) * (STACK_OFFSET / 2) + (STACK_OFFSET * stackIndex)}px`,
+                zIndex: `${stackIndex}`,
+                opacity: `${(isDragging ? 0.5 : 1) * (0.6 + 0.4 * (stackTotal == 1 ? 1 : (stackIndex/(stackTotal - 1))))}`
             }}
             className="card"
         >

@@ -4,14 +4,14 @@
     border-color: black;
     border-width: 2px;
     border-style: solid;
-    width: 200px;
-    height: 300px;
-    padding: 10px;
+    /* width: 246px;
+    height: 308px; */
     font-size: initial;
 }
 
 .battlefieldCell img {
     display: block;
+    box-shadow: -5px -5px 10px 3px rgba(0, 0, 0, 0.5);
 }
 
 .battlefieldRow {
@@ -24,6 +24,7 @@
 }
 
 .card {
-    width: 146px;
-    height: 208px;
+    position: absolute;
+    /* width: 146px;
+    height: 208px; */
 }
