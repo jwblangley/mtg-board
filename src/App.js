@@ -1,11 +1,14 @@
 import './App.css';
 
+import Board from "./board"
 import Card from "./card"
 
 const App = () => {
   return (
     <div>
-      <Card />
+      <Board>
+        <Card />
+      </Board>
     </div>
   );
 }
