@@ -1,13 +1,38 @@
 import './App.css';
 
+import { useEffect, useState } from 'react';
+
+
 import Board from "./board"
+import Battlefield from "./battlefield"
 import Card from "./card"
 
+
+function generateEmptyBattlefield(width, height) {
+  return Array(height).fill().map(() => Array(width).fill([]))
+}
+
+
 const App = () => {
+  const battlefieldWidth = 2
+  const battlefieldHeight = 2
+  const [battlefieldContent, setBattlefieldContent] = useState(generateEmptyBattlefield(battlefieldWidth, battlefieldHeight))
+
+  // Set up test content
+  const testContent = generateEmptyBattlefield(battlefieldWidth, battlefieldWidth)
+  testContent[0][0] = [{ id: "abc" }]
+  useEffect(() => {
+    setBattlefieldContent(testContent)
+  }, [])
+
+
+
+
   return (
     <div>
       <Board>
-        <Card />
+        <Battlefield content={battlefieldContent}>
+        </Battlefield>
       </Board>
     </div>
   );

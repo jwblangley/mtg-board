@@ -1,3 +1,29 @@
-p {
-    color:red
+.battlefieldCell {
+    position: relative;
+    display: inline-block;
+    border-color: black;
+    border-width: 2px;
+    border-style: solid;
+    width: 200px;
+    height: 300px;
+    padding: 10px;
+    font-size: initial;
+}
+
+.battlefieldCell img {
+    display: block;
+}
+
+.battlefieldRow {
+    display: block;
+    font-size: 0;
+}
+
+.battlefield {
+
+}
+
+.card {
+    width: 146px;
+    height: 208px;
 }
