@@ -19,7 +19,7 @@ const App = () => {
   const [battlefieldContent, setBattlefieldContent] = useState(generateEmptyBattlefield(battlefieldWidth, battlefieldHeight))
 
   // Set up test content
-  const testContent = generateEmptyBattlefield(battlefieldWidth, battlefieldWidth)
+  const testContent = generateEmptyBattlefield(battlefieldWidth, battlefieldHeight)
   testContent[0][0] = [{ id: "abc" }]
   useEffect(() => {
     setBattlefieldContent(testContent)
