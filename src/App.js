@@ -1,8 +1,12 @@
 import './App.css';
 
-function App() {
+import Card from "./card"
+
+const App = () => {
   return (
-    <p>test</p>
+    <div>
+      <Card />
+    </div>
   );
 }
 
