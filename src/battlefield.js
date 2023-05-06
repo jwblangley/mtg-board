@@ -7,7 +7,7 @@ import { CARD_WIDTH, CARD_HEIGHT, DraggableTypes, STACK_MAX, STACK_OFFSET } from
 const Cell = ({content, i, j}) => {
     const [{isOver}, drop] = useDrop(
         () => ({
-            accept: DraggableTypes.CARD,
+            accept: content.length === STACK_MAX ? [] : DraggableTypes.CARD,
             drop: () => console.log(`drop: ${i} ${j}`),
             collect: monitor => ({
                 isOver: !!monitor.isOver()
