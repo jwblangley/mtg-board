@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 
 import Board from "./board"
 import Battlefield from "./battlefield"
-import Card from "./card"
 
 
 function generateEmptyBattlefield(width, height) {
@@ -29,7 +28,7 @@ const App = () => {
   ]
   useEffect(() => {
     setBattlefieldContent(testContent)
-  }, [])
+  }, [testContent])
 
 
 
