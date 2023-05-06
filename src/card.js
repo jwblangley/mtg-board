@@ -20,7 +20,9 @@ const Card = ({stackIndex, stackTotal}) => {
                 top: `${STACK_OFFSET / 2 + (STACK_MAX - stackTotal) * (STACK_OFFSET / 2) + (STACK_OFFSET * stackIndex)}px`,
                 left: `${STACK_OFFSET / 2 + (STACK_MAX - stackTotal) * (STACK_OFFSET / 2) + (STACK_OFFSET * stackIndex)}px`,
                 zIndex: `${stackIndex}`,
-                opacity: `${(isDragging ? 0.5 : 1) * (0.6 + 0.4 * (stackTotal == 1 ? 1 : (stackIndex/(stackTotal - 1))))}`
+                opacity: `${(isDragging ? 0.5 : 1) * (0.6 + 0.4 * (stackTotal == 1 ? 1 : (stackIndex/(stackTotal - 1))))}`,
+                border: `${isDragging ? "solid red 5px" : ""}`,
+                borderRadius: `${isDragging ? "12px" : ""}`
             }}
             className="card"
         >

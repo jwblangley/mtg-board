@@ -29,12 +29,13 @@ const Cell = ({content, i, j}) => {
                 <div
                     style={{
                         position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width:"100%",
-                        height:"100%",
+                        top: "5%",
+                        left: "5%",
+                        width:"90%",
+                        height:"90%",
                         zIndex: 99,
                         opacity: 0.5,
+                        borderRadius: "10%",
                         backgroundColor: 'yellow',
                     }}
                 />
