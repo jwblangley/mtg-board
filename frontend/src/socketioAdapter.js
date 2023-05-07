@@ -1,12 +1,20 @@
 import { io } from "socket.io-client"
 
 class SocketIOAdapter {
-    constructor(url, userId) {
-        this.socket = io(url, {query: `userId=${userId}`})
-
-        this.socket.on("message", (msg) => {
-            console.log(`Message received: ${msg}`)
+    constructor(url, userId, setGameState) {
+        this.socket = io(url, {
+            autoConnect: false,
+            query: `userId=${userId}`
         })
+
+        this.socket.on("gameState", (gameState) => {
+            console.log(gameState)
+            setGameState(gameState)
+        })
+    }
+
+    connect() {
+        this.socket.connect()
     }
 }
 
