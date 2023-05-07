@@ -1,15 +1,21 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useDrop } from 'react-dnd'
 
 import Card from "./card"
 import { CARD_WIDTH, CARD_HEIGHT, DraggableTypes, STACK_MAX, STACK_OFFSET } from './constants'
+import { ServerContext } from './serverProvider'
 
 const Cell = ({content, i, j}) => {
+    let server = useContext(ServerContext)
     const [{isOver}, drop] = useDrop(
         () => ({
             accept: content.length === STACK_MAX ? [] : DraggableTypes.CARD,
             canDrop: () => content.length < STACK_MAX,
-            drop: () => console.log(`drop: ${i} ${j}`),
+            drop: (monitor) => {
+                console.log(`drop ${monitor.id}: ${i} ${j}`)
+                console.log(server)
+                server.moveCard(monitor.id, i, j)
+            },
             collect: (monitor) => ({
                 isOver: !! monitor.isOver(),
                 canDrop: !! monitor.canDrop()
@@ -42,7 +48,7 @@ const Cell = ({content, i, j}) => {
                     }}
                 />
             )}
-            {content.map((card, stackIndex) => (<Card key={card.id} stackIndex={stackIndex} stackTotal={content.length}/>))}
+            {content.map((card, stackIndex) => (<Card id={card.id} key={card.id} stackIndex={stackIndex} stackTotal={content.length}/>))}
         </div>
     )
 }

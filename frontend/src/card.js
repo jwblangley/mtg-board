@@ -3,10 +3,12 @@ import ranar from "./Ranar the Ever-Watchful-khc-2.png"
 import { useDrag } from 'react-dnd'
 import { CARD_WIDTH, CARD_HEIGHT, STACK_OFFSET, STACK_MAX, DraggableTypes } from "./constants";
 
-const Card = ({stackIndex, stackTotal}) => {
+const Card = ({id, stackIndex, stackTotal}) => {
     const [{ isDragging }, drag] = useDrag(() => ({
+        item: {id: id},
         type: DraggableTypes.CARD,
         collect: monitor => ({
+            item: monitor.getItem(),
             isDragging: !!monitor.isDragging(),
         }),
     }))
