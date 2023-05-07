@@ -16,11 +16,14 @@ class SocketIOAdapter {
             console.log(gameState)
             setGameState(gameState)
         })
+
+        this.socket.on("connect_error", (err) => {
+            console.log(`connect_error due to ${err.message}`);
+        });
     }
 
     connect() {
         this.socket.connect()
-        // this.socket.emit(MESSAGE_TYPES.CARD_MOVE, {test: "test"})
     }
 
     moveCard(id, i, j) {
