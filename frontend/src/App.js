@@ -13,7 +13,7 @@ function generateEmptyBattlefield(width, height) {
 }
 
 // TODO @James: Change once environment is set up
-const server = new SocketIOAdapter("http://localhost:8001")
+const server = new SocketIOAdapter("http://localhost:8001", "James")
 
 // Set up test content
 const testContent = generateEmptyBattlefield(2, 2)
@@ -31,7 +31,7 @@ const App = () => {
 
   useEffect(() => {
     setBattlefieldContent(testContent)
-  }, [testContent])
+  }, [])
 
 
 
