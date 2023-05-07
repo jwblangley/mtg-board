@@ -1,10 +1,11 @@
 const { Server } = require("socket.io");
+require("dotenv").config()
 
 const { GameState } = require("./gameState")
 
 const io = new Server({
     cors: {
-        origin: "http://localhost:3000"
+        origin: process.env["CORS_ALLOW"]
     }
 });
 
@@ -35,8 +36,4 @@ io.on("connection", (socket => {
 
 }))
 
-
-
-
-
-io.listen(8001)
+io.listen(8000)

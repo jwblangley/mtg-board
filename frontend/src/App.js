@@ -7,25 +7,15 @@ import Battlefield from "./battlefield"
 import { ServerProvider } from './serverProvider';
 
 
-function generateEmptyBattlefield(width, height) {
-  return Array(height).fill().map(() => Array(width).fill([]))
-}
-
+const SERVER_ADDRESS = process.env["REACT_APP_SERVER_ADDRESS"]
+console.log(SERVER_ADDRESS)
 
 const App = () => {
   const [user, setUser] = useState("James")
-  const [battlefieldContent, setBattlefieldContent] = useState(generateEmptyBattlefield(1, 1))
-
-  // TODO @James: Change once environment is set up
-  // let server = new SocketIOAdapter("http://localhost:8001", user, setBattlefieldContent)
-
-  // useEffect(() => {
-  //   server.connect()
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
+  const [battlefieldContent, setBattlefieldContent] = useState([[[]]])
 
   return (
-    <ServerProvider url="http://localhost:8001" userId={user} setGameState={setBattlefieldContent}>
+    <ServerProvider url={SERVER_ADDRESS} userId={user} setGameState={setBattlefieldContent}>
       <Board>
         <Battlefield content={battlefieldContent}>
         </Battlefield>

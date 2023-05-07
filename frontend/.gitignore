@@ -25,3 +25,5 @@ yarn-error.log*
 # App custom
 card-images
 src/Ranar the Ever-Watchful-khc-2.png
+
+.env
