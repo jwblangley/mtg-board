@@ -13,7 +13,7 @@ const Cell = ({content, i, j}) => {
             canDrop: () => content.length < STACK_MAX,
             drop: (monitor) => {
                 console.log(`drop ${monitor.id}: ${i} ${j}`)
-                server.moveCard(monitor.id, i, j)
+                server.current.moveCard(monitor.id, i, j)
             },
             collect: (monitor) => ({
                 isOver: !! monitor.isOver(),

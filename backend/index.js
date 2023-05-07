@@ -17,13 +17,13 @@ function publishStateUpdate(gameState) {
     io.emit(MESSAGE_TYPES.GAMESTATE, gameState)
 }
 
+let gameState = new GameState(publishStateUpdate, 2,2)
+
 function setupHandlers(socket) {
     socket.on(MESSAGE_TYPES.CARD_MOVE, ({id, i, j}) => {
-        console.log({id, i, j})
+        gameState.moveCard(id, i, j)
     })
 }
-
-let gameState = new GameState(publishStateUpdate, 2,2)
 
 io.on("connection", (socket => {
     setupHandlers(socket)

@@ -15,7 +15,7 @@ const ServerProvider = ({children, url, userId, setGameState}) => {
     }, [])
 
     return (
-        <ServerContext.Provider value={adapter.current}>{children}</ServerContext.Provider>
+        <ServerContext.Provider value={adapter}>{children}</ServerContext.Provider>
     )
 }
 
