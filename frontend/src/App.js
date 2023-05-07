@@ -14,17 +14,16 @@ function generateEmptyBattlefield(width, height) {
 
 
 const App = () => {
+  const [user, setUser] = useState("James")
   const [battlefieldContent, setBattlefieldContent] = useState(generateEmptyBattlefield(1, 1))
 
   // TODO @James: Change once environment is set up
-  let server = new SocketIOAdapter("http://localhost:8001", "James", setBattlefieldContent)
+  let server = new SocketIOAdapter("http://localhost:8001", user, setBattlefieldContent)
 
   useEffect(() => {
     server.connect()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-
 
   return (
     <div>
