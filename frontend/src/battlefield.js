@@ -8,9 +8,11 @@ const Cell = ({content, i, j}) => {
     const [{isOver}, drop] = useDrop(
         () => ({
             accept: content.length === STACK_MAX ? [] : DraggableTypes.CARD,
+            canDrop: () => content.length < STACK_MAX,
             drop: () => console.log(`drop: ${i} ${j}`),
-            collect: monitor => ({
-                isOver: !!monitor.isOver()
+            collect: (monitor) => ({
+                isOver: !! monitor.isOver(),
+                canDrop: !! monitor.canDrop()
             })
         })
     )
