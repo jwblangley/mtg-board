@@ -1,0 +1,8 @@
+{
+  "name": "mtg-board-backend",
+  "version": "0.1.0",
+  "main": "node index.js",
+  "dependencies": {
+    "socket.io": "^4.6.1"
+  }
+}
