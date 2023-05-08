@@ -86,7 +86,8 @@ const Battlefield = ({content, scale}) => {
                     width: content.length * (CARD_WIDTH + STACK_OFFSET * STACK_MAX),
                     height: content[0].length * (CARD_HEIGHT + STACK_OFFSET * STACK_MAX),
                     margin: "auto",
-                    zoom: scale
+                    transform: `scale(${scale})`,
+                    transformOrigin: "top"
                 }}
             >
                 {content.map((row, i) => (<Row

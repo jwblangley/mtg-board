@@ -7,7 +7,7 @@ const Card = ({id, stackIndex, stackTotal}) => {
     const [{ isDragging }, drag] = useDrag(() => ({
         item: {id: id},
         type: DraggableTypes.CARD,
-        collect: monitor => ({
+        collect: (monitor) => ({
             item: monitor.getItem(),
             isDragging: !!monitor.isDragging(),
         }),
