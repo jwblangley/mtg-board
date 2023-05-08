@@ -1,6 +1,8 @@
 import React, { useContext } from 'react'
 import { useDrop } from 'react-dnd'
 
+import { Paper } from '@mui/material';
+
 import Card from "./card"
 import { CARD_WIDTH, CARD_HEIGHT, DraggableTypes, STACK_MAX, STACK_OFFSET } from './constants'
 import { ServerContext } from './serverProvider'
@@ -24,7 +26,7 @@ const Cell = ({content, i, j}) => {
 
 
     return (
-        <div
+        <Paper
             className="battlefieldCell"
             ref={drop}
             style={{
@@ -48,13 +50,13 @@ const Cell = ({content, i, j}) => {
                 />
             )}
             {content.map((card, stackIndex) => (<Card id={card.id} key={card.id} stackIndex={stackIndex} stackTotal={content.length}/>))}
-        </div>
+        </Paper>
     )
 }
 
 const Row = ({content, i}) => {
     return (
-        <div className="battlefieldRow">
+        <div className="battlefieldRow" style={{width: content.length * (CARD_WIDTH + STACK_OFFSET * STACK_MAX), height: CARD_HEIGHT + STACK_OFFSET * STACK_MAX}}>
             {content.map((cell, j) => (<Cell content={cell} i={i} j={j} key={`battlefieldCell-${i}-${j}`}/>))}
         </div>
     )
