@@ -22,8 +22,6 @@ const App = () => {
   return (
     <ServerProvider
       url={SERVER_ADDRESS}
-      lobbyId={lobby}
-      userId={user}
       setGameState={setBattlefieldContent}
     >
       <MainMenu
