@@ -2,7 +2,7 @@ import React from 'react'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
-const Board = ({children}) => {
+const DraggableCanvas = ({children}) => {
     return (
         <DndProvider backend={HTML5Backend}>
             {children}
@@ -10,4 +10,4 @@ const Board = ({children}) => {
     )
 }
 
-export default Board;
+export default DraggableCanvas;
