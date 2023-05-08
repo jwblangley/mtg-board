@@ -6,10 +6,10 @@ const MESSAGE_TYPES = {
 }
 
 class SocketIOAdapter {
-    constructor(url, userId, setGameState) {
+    constructor(url, lobbyId, userId, setGameState) {
         this.socket = io(url, {
             autoConnect: false,
-            query: `userId=${userId}`
+            query: `lobbyId=${lobbyId}&userId=${userId}`
         })
 
         this.socket.on(MESSAGE_TYPES.GAMESTATE, (gameState) => {

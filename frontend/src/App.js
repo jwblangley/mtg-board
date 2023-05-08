@@ -13,7 +13,8 @@ import MainMenu from './mainMenu';
 const SERVER_ADDRESS = process.env["REACT_APP_SERVER_ADDRESS"]
 
 const App = () => {
-  const [user, setUser] = useState("James")
+  const [user, setUser] = useState("unset")
+  const [lobby, setLobby] = useState("unset")
   const [battlefieldScale, setBattlefieldScale] = useState(0.5)
   const [battlefieldContent, setBattlefieldContent] = useState([[[]]])
   const [selectedCard, setSelectedCard] = useState()
@@ -21,6 +22,7 @@ const App = () => {
   return (
     <ServerProvider
       url={SERVER_ADDRESS}
+      lobbyId={lobby}
       userId={user}
       setGameState={setBattlefieldContent}
     >

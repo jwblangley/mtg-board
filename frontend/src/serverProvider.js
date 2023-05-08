@@ -4,11 +4,11 @@ import SocketIOAdapter from "./socketioAdapter"
 
 const ServerContext = createContext({})
 
-const ServerProvider = ({children, url, userId, setGameState}) => {
+const ServerProvider = ({children, url, lobbyId, userId, setGameState}) => {
     const adapter = useRef(undefined)
     useEffect(() => {
         if (adapter.current === undefined) {
-            adapter.current = new SocketIOAdapter(url, userId, setGameState)
+            adapter.current = new SocketIOAdapter(url, lobbyId, userId, setGameState)
             adapter.current.connect()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

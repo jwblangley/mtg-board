@@ -1,36 +1,43 @@
 const express = require("express")
 const http = require("http")
+const cors = require("cors")
 
 const { Server } = require("socket.io");
 require("dotenv").config()
 
 const { GameState } = require("./gameState")
+const { generateId } = require("./lobbyGeneration")
+const { MESSAGE_TYPES } = require("./constants")
 
 const BATTLEFIELD_WIDTH = 7
 const BATTLEFIELD_HEIGHT = 4
 
 
+const corsValues = {
+    origin: process.env["CORS_ALLOW"]
+}
+
 const app = express()
+app.use(cors(corsValues))
 const server = http.createServer(app)
 
 const io = new Server(server, {
-    cors: {
-        origin: process.env["CORS_ALLOW"]
-    }
+    cors : corsValues
 });
-
-const MESSAGE_TYPES = {
-    GAMESTATE: "gameState",
-    CARD_MOVE: "cardMove"
-}
 
 function publishStateUpdate(gameState) {
     io.emit(MESSAGE_TYPES.GAMESTATE, gameState)
 }
 
-let gameState = new GameState(publishStateUpdate, BATTLEFIELD_WIDTH, BATTLEFIELD_HEIGHT)
+
+const lobbyGameStateMap = new Map()
 
 function setupSocketHandlers(socket) {
+    socket.on("disconnect", () => {
+        const userId = socket.handshake.query?.userId
+        const lobbyId = socket.handshake.query?.lobbyId
+        console.log(`${userId} disconnected from lobby ${lobbyId}`)
+    })
     socket.on(MESSAGE_TYPES.CARD_MOVE, ({id, i, j}) => {
         gameState.moveCard(id, i, j)
     })
@@ -39,17 +46,27 @@ function setupSocketHandlers(socket) {
 io.on("connection", (socket => {
     setupSocketHandlers(socket)
 
-    const userId = socket.handshake["query"]["userId"]
-    console.log(`${userId} connected`)
+    const userId = socket.handshake.query?.userId
+    const lobbyId = socket.handshake.query?.lobbyId
+    console.log(`${userId} connected to lobby ${lobbyId}`)
 
-    socket.emit(MESSAGE_TYPES.GAMESTATE, gameState.getState())
+    // socket.emit(MESSAGE_TYPES.GAMESTATE, gameState.getState())
 
 }))
 
-app.get('/', (req, res) => {
-    res.send("<h1>Hello World!</h1>")
-    // res.sendFile(__dirname + '/index.html');
-});
+// app.get("/", (req, res) => {
+//     res.send("<h1>Hello World!</h1>")
+//     // res.sendFile(__dirname + '/index.html');
+// });
+
+app.get("/new-lobby", (req, res) => {
+    let id = ""
+    while (id === "" || lobbyGameStateMap.has(id)) {
+        id = generateId(6)
+    }
+    lobbyGameStateMap.set(id, new GameState(publishStateUpdate, BATTLEFIELD_WIDTH, BATTLEFIELD_WIDTH))
+    res.json({lobbyId: id})
+})
 
 
 server.listen(8000, () => {
