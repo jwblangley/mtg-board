@@ -49,15 +49,30 @@ const Cell = ({content, i, j}) => {
                     }}
                 />
             )}
-            {content.map((card, stackIndex) => (<Card id={card.id} key={card.id} stackIndex={stackIndex} stackTotal={content.length}/>))}
+            {content.map((card, stackIndex) => (<Card
+                id={card.id}
+                key={card.id}
+                stackIndex={stackIndex}
+                stackTotal={content.length}/>
+            ))}
         </Paper>
     )
 }
 
 const Row = ({content, i}) => {
     return (
-        <div className="battlefieldRow" style={{width: content.length * (CARD_WIDTH + STACK_OFFSET * STACK_MAX), height: CARD_HEIGHT + STACK_OFFSET * STACK_MAX}}>
-            {content.map((cell, j) => (<Cell content={cell} i={i} j={j} key={`battlefieldCell-${i}-${j}`}/>))}
+        <div
+            className="battlefieldRow"
+            style={{
+                width: content.length * (CARD_WIDTH + STACK_OFFSET * STACK_MAX),
+                height: CARD_HEIGHT + STACK_OFFSET * STACK_MAX
+            }}
+        >
+            {content.map((cell, j) => (<Cell
+                content={cell}
+                i={i} j={j}
+                key={`battlefieldCell-${i}-${j}`}
+            />))}
         </div>
     )
 }
@@ -65,7 +80,11 @@ const Row = ({content, i}) => {
 const Battlefield = ({content}) => {
     return (
         <div className="battlefield">
-            {content.map((row, i) => (<Row content={row} i={i} key={`battlefieldRow-${i}`} />))}
+            {content.map((row, i) => (<Row
+                content={row}
+                i={i}
+                key={`battlefieldRow-${i}`}
+            />))}
         </div>
     )
 }
