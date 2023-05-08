@@ -8,7 +8,7 @@ const ServerProvider = ({children, url, lobbyId, userId, setGameState}) => {
     const adapter = useRef(undefined)
     useEffect(() => {
         if (adapter.current === undefined) {
-            adapter.current = new SocketIOAdapter(url, lobbyId, userId, setGameState)
+            adapter.current = new SocketIOAdapter(url, setGameState)
             adapter.current.connect()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

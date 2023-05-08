@@ -64,7 +64,12 @@ app.get("/new-lobby", (req, res) => {
     while (id === "" || lobbyGameStateMap.has(id)) {
         id = generateId(6)
     }
-    lobbyGameStateMap.set(id, new GameState(publishStateUpdate, BATTLEFIELD_WIDTH, BATTLEFIELD_WIDTH))
+    lobbyGameStateMap.set(id, new GameState(
+        publishStateUpdate,
+        BATTLEFIELD_WIDTH,
+        BATTLEFIELD_HEIGHT
+    ))
+    console.log(`New lobby: ${id}`)
     res.json({lobbyId: id})
 })
 

@@ -6,24 +6,27 @@ const MESSAGE_TYPES = {
 }
 
 class SocketIOAdapter {
-    constructor(url, lobbyId, userId, setGameState) {
-        this.socket = io(url, {
+    constructor(url, setGameState) {
+        this.url = url
+        this.setGameState = setGameState
+    }
+
+    connect(lobbyId, userId) {
+        this.socket = io(this.url, {
             autoConnect: false,
             query: `lobbyId=${lobbyId}&userId=${userId}`
         })
 
+        this.socket.connect()
+
         this.socket.on(MESSAGE_TYPES.GAMESTATE, (gameState) => {
             console.log(gameState)
-            setGameState(gameState)
+            this.setGameState(gameState)
         })
 
         this.socket.on("connect_error", (err) => {
             console.log(`connect_error due to ${err.message}`);
         });
-    }
-
-    connect() {
-        this.socket.connect()
     }
 
     moveCard(id, i, j) {

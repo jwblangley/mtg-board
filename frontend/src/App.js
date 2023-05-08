@@ -13,8 +13,8 @@ import MainMenu from './mainMenu';
 const SERVER_ADDRESS = process.env["REACT_APP_SERVER_ADDRESS"]
 
 const App = () => {
-  const [user, setUser] = useState("unset")
-  const [lobby, setLobby] = useState("unset")
+  const [user, setUser] = useState("")
+  const [lobby, setLobby] = useState("")
   const [battlefieldScale, setBattlefieldScale] = useState(0.5)
   const [battlefieldContent, setBattlefieldContent] = useState([[[]]])
   const [selectedCard, setSelectedCard] = useState()
@@ -26,7 +26,10 @@ const App = () => {
       userId={user}
       setGameState={setBattlefieldContent}
     >
-      <MainMenu>
+      <MainMenu
+        propagateConfirmedUser={setUser}
+        propagateConfirmedLobby={setLobby}
+      >
         <DraggableCanvas>
             <SelectedCard card={selectedCard} />
             <Battlefield
