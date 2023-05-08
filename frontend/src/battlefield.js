@@ -26,12 +26,12 @@ const Cell = ({content, i, j}) => {
 
 
     return (
-        <Paper
+        <div
             className="battlefieldCell"
             ref={drop}
             style={{
                 width: CARD_WIDTH + STACK_OFFSET * STACK_MAX,
-                height: CARD_HEIGHT + STACK_OFFSET * STACK_MAX
+                height: CARD_HEIGHT + STACK_OFFSET * STACK_MAX,
             }}
         >
             {isOver && (
@@ -55,7 +55,7 @@ const Cell = ({content, i, j}) => {
                 stackIndex={stackIndex}
                 stackTotal={content.length}/>
             ))}
-        </Paper>
+        </div>
     )
 }
 
@@ -77,15 +77,25 @@ const Row = ({content, i}) => {
     )
 }
 
-const Battlefield = ({content}) => {
+const Battlefield = ({content, scale}) => {
     return (
-        <div className="battlefield">
-            {content.map((row, i) => (<Row
-                content={row}
-                i={i}
-                key={`battlefieldRow-${i}`}
-            />))}
-        </div>
+        <Paper className="battlefield" elevation={10}>
+            <Paper
+                elevation={20}
+                style={{
+                    width: content.length * (CARD_WIDTH + STACK_OFFSET * STACK_MAX),
+                    height: content[0].length * (CARD_HEIGHT + STACK_OFFSET * STACK_MAX),
+                    margin: "auto",
+                    zoom: scale
+                }}
+            >
+                {content.map((row, i) => (<Row
+                    content={row}
+                    i={i}
+                    key={`battlefieldRow-${i}`}
+                />))}
+            </Paper>
+        </Paper>
     )
 }
 
