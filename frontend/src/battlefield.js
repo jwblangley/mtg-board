@@ -7,14 +7,18 @@ import Card from "./card"
 import { CARD_WIDTH, CARD_HEIGHT, DraggableTypes, STACK_MAX, STACK_OFFSET } from './constants'
 import { ServerContext } from './serverProvider'
 
-const Cell = ({content, i, j}) => {
+const Cell = ({
+    content,
+    i,
+    j,
+    setCardPreview={setCardPreview}
+}) => {
     let server = useContext(ServerContext)
     const [{isOver}, drop] = useDrop(
         () => ({
             accept: content.length === STACK_MAX ? [] : DraggableTypes.CARD,
             canDrop: () => content.length < STACK_MAX,
             drop: (monitor) => {
-                console.log(`drop ${monitor.id}: ${i} ${j}`)
                 server.current.moveCard(monitor.id, i, j)
             },
             collect: (monitor) => ({
@@ -42,7 +46,7 @@ const Cell = ({content, i, j}) => {
                         left: "5%",
                         width:"90%",
                         height:"90%",
-                        zIndex: 99,
+                        zIndex: 10,
                         opacity: 0.5,
                         borderRadius: "10%",
                         backgroundColor: 'yellow',
@@ -50,16 +54,21 @@ const Cell = ({content, i, j}) => {
                 />
             )}
             {content.map((card, stackIndex) => (<Card
-                id={card.id}
+                content={card}
                 key={card.id}
                 stackIndex={stackIndex}
-                stackTotal={content.length}/>
-            ))}
+                stackTotal={content.length}
+                setCardPreview={setCardPreview}
+            />))}
         </div>
     )
 }
 
-const Row = ({content, i}) => {
+const Row = ({
+    content,
+    i,
+    setCardPreview
+}) => {
     return (
         <div
             className="battlefieldRow"
@@ -72,12 +81,17 @@ const Row = ({content, i}) => {
                 content={cell}
                 i={i} j={j}
                 key={`battlefieldCell-${i}-${j}`}
+                setCardPreview={setCardPreview}
             />))}
         </div>
     )
 }
 
-const Battlefield = ({content, scale}) => {
+const Battlefield = ({
+    content,
+    scale,
+    setCardPreview
+}) => {
     return (
         <Paper className="battlefield" elevation={10}>
             <div style={{
@@ -100,6 +114,7 @@ const Battlefield = ({content, scale}) => {
                         content={row}
                         i={i}
                         key={`battlefieldRow-${i}`}
+                        setCardPreview={setCardPreview}
                     />))}
                 </Paper>
             </div>

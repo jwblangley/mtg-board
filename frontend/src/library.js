@@ -1,9 +1,9 @@
 import React from 'react'
 
-const DraggableCanvas = ({content}) => {
+const Library = ({content}) => {
     return (
         <div />
     )
 }
 
-export default DraggableCanvas;
+export default Library;

@@ -1,9 +1,6 @@
 .battlefieldCell {
     position: relative;
     display: inline-block;
-    /* border-color: black;
-    border-width: 2px;
-    border-style: solid; */
     font-size: initial;
 }
 
@@ -18,13 +15,20 @@
 }
 
 .battlefield {
-    margin: auto;
-    margin-top: 2vh;
-    width: 70vw;
+    width: 80vw;
     height:70vh;
     overflow: scroll;
+    display: inline-block;
 }
 
 .card {
     position: absolute;
+    cursor: pointer;
+}
+
+.cardPreview {
+    display: inline-block;
+    width: 20vw;
+    height: 70vh;
+    overflow-y: scroll;
 }
