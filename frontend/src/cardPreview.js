@@ -9,6 +9,7 @@ const CardPreview = ({ card }) => {
     return (
         <div className="cardPreview">
             <img
+                alt="Card Preview"
                 src={!!card?.id ? ranar : emptyImg}
                 style={{
                     width: "100%",
