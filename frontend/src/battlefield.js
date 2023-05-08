@@ -80,22 +80,29 @@ const Row = ({content, i}) => {
 const Battlefield = ({content, scale}) => {
     return (
         <Paper className="battlefield" elevation={10}>
-            <Paper
-                elevation={20}
-                style={{
-                    width: content.length * (CARD_WIDTH + STACK_OFFSET * STACK_MAX),
-                    height: content[0].length * (CARD_HEIGHT + STACK_OFFSET * STACK_MAX),
-                    margin: "auto",
-                    transform: `scale(${scale})`,
-                    transformOrigin: "top"
-                }}
-            >
-                {content.map((row, i) => (<Row
-                    content={row}
-                    i={i}
-                    key={`battlefieldRow-${i}`}
-                />))}
-            </Paper>
+            <div style={{
+                overflow: "hidden",
+                padding: 10,
+                width: scale * content[0].length * (CARD_WIDTH + STACK_OFFSET * STACK_MAX) + 30,
+                height: scale * content.length * (CARD_HEIGHT + STACK_OFFSET * STACK_MAX) + 30,
+                margin: "auto",
+            }}>
+                <Paper
+                    elevation={20}
+                    style={{
+                        width: content[0].length * (CARD_WIDTH + STACK_OFFSET * STACK_MAX),
+                        height: content.length * (CARD_HEIGHT + STACK_OFFSET * STACK_MAX),
+                        transform: `scale(${scale})`,
+                        transformOrigin: "0 0"
+                    }}
+                >
+                    {content.map((row, i) => (<Row
+                        content={row}
+                        i={i}
+                        key={`battlefieldRow-${i}`}
+                    />))}
+                </Paper>
+            </div>
         </Paper>
     )
 }

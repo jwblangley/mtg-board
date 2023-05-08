@@ -3,6 +3,9 @@ require("dotenv").config()
 
 const { GameState } = require("./gameState")
 
+const BATTLEFIELD_WIDTH = 7
+const BATTLEFIELD_HEIGHT = 4
+
 const io = new Server({
     cors: {
         origin: process.env["CORS_ALLOW"]
@@ -18,7 +21,7 @@ function publishStateUpdate(gameState) {
     io.emit(MESSAGE_TYPES.GAMESTATE, gameState)
 }
 
-let gameState = new GameState(publishStateUpdate, 2,2)
+let gameState = new GameState(publishStateUpdate, BATTLEFIELD_WIDTH, BATTLEFIELD_HEIGHT)
 
 function setupHandlers(socket) {
     socket.on(MESSAGE_TYPES.CARD_MOVE, ({id, i, j}) => {
