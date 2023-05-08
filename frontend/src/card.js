@@ -3,7 +3,7 @@ import ranar from "./Ranar the Ever-Watchful-khc-2.png"
 import { useDrag } from 'react-dnd'
 import { CARD_WIDTH, CARD_HEIGHT, STACK_OFFSET, STACK_MAX, DraggableTypes } from "./constants";
 
-const Card = ({content, stackIndex, stackTotal, setCardPreview}) => {
+const Card = ({content, stackIndex, stackTotal, setSelectedCard}) => {
     const [{ isDragging }, drag] = useDrag(() => ({
         item: content,
         type: DraggableTypes.CARD,
@@ -12,6 +12,13 @@ const Card = ({content, stackIndex, stackTotal, setCardPreview}) => {
             isDragging: !!monitor.isDragging(),
         }),
     }))
+
+
+    function clickHandler(e) {
+        e.preventDefault()
+        setSelectedCard(content)
+    }
+
     return (
         <div
             ref={drag}
@@ -26,8 +33,7 @@ const Card = ({content, stackIndex, stackTotal, setCardPreview}) => {
                 borderRadius: `${isDragging ? "12px" : ""}`
             }}
             className="card"
-            onMouseEnter={()=> setCardPreview(content)}
-            onMouseLeave={()=> setCardPreview({})}
+            onClick={clickHandler}
         >
             <img src={ranar} alt="card" width="100%" height="100%"></img>
         </div>

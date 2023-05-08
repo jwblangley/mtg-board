@@ -5,9 +5,9 @@ import ranar from "./Ranar the Ever-Watchful-khc-2.png"
 const emptyImg = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
 
 
-const CardPreview = ({ card }) => {
+const SelectedCard = ({ card }) => {
     return (
-        <div className="cardPreview">
+        <div className="selectedCard">
             <img
                 alt="Card Preview"
                 src={!!card?.id ? ranar : emptyImg}
@@ -19,4 +19,4 @@ const CardPreview = ({ card }) => {
     )
 }
 
-export default CardPreview;
+export default SelectedCard;

@@ -6,7 +6,7 @@ import Battlefield from "./battlefield"
 import Library from "./library"
 import { ServerProvider } from './serverProvider';
 import DraggableCanvas from './draggable';
-import CardPreview from './cardPreview';
+import SelectedCard from './selectedCard';
 
 
 const SERVER_ADDRESS = process.env["REACT_APP_SERVER_ADDRESS"]
@@ -15,7 +15,7 @@ const App = () => {
   const [user, setUser] = useState("James")
   const [battlefieldScale, setBattlefieldScale] = useState(0.5)
   const [battlefieldContent, setBattlefieldContent] = useState([[[]]])
-  const [cardPreview, setCardPreview] = useState()
+  const [selectedCard, setSelectedCard] = useState()
 
   return (
     <ServerProvider
@@ -24,11 +24,11 @@ const App = () => {
       setGameState={setBattlefieldContent}
     >
       <DraggableCanvas>
-          <CardPreview card={cardPreview} />
+          <SelectedCard card={selectedCard} />
           <Battlefield
             content={battlefieldContent}
             scale={battlefieldScale}
-            setCardPreview={setCardPreview}
+            setSelectedCard={setSelectedCard}
           />
           <Library />
       </DraggableCanvas>

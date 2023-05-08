@@ -11,7 +11,7 @@ const Cell = ({
     content,
     i,
     j,
-    setCardPreview={setCardPreview}
+    setSelectedCard={setSelectedCard}
 }) => {
     let server = useContext(ServerContext)
     const [{isOver}, drop] = useDrop(
@@ -58,7 +58,7 @@ const Cell = ({
                 key={card.id}
                 stackIndex={stackIndex}
                 stackTotal={content.length}
-                setCardPreview={setCardPreview}
+                setSelectedCard={setSelectedCard}
             />))}
         </div>
     )
@@ -67,7 +67,7 @@ const Cell = ({
 const Row = ({
     content,
     i,
-    setCardPreview
+    setSelectedCard
 }) => {
     return (
         <div
@@ -81,7 +81,7 @@ const Row = ({
                 content={cell}
                 i={i} j={j}
                 key={`battlefieldCell-${i}-${j}`}
-                setCardPreview={setCardPreview}
+                setSelectedCard={setSelectedCard}
             />))}
         </div>
     )
@@ -90,10 +90,19 @@ const Row = ({
 const Battlefield = ({
     content,
     scale,
-    setCardPreview
+    setSelectedCard
 }) => {
     return (
-        <Paper className="battlefield" elevation={10}>
+        <Paper
+            className="battlefield"
+            elevation={10}
+            onClick={(e) => {
+                // Hack to detect clicking on a card: the alt text of card image
+                if (e.target?.alt !== "card") {
+                    setSelectedCard({})
+                }
+            }}
+        >
             <div style={{
                 overflow: "hidden",
                 padding: 10,
@@ -114,7 +123,7 @@ const Battlefield = ({
                         content={row}
                         i={i}
                         key={`battlefieldRow-${i}`}
-                        setCardPreview={setCardPreview}
+                        setSelectedCard={setSelectedCard}
                     />))}
                 </Paper>
             </div>
