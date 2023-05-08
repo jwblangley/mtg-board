@@ -25,8 +25,8 @@ const io = new Server(server, {
     cors : corsValues
 });
 
-function publishStateUpdate(gameState) {
-    io.emit(MESSAGE_TYPES.GAMESTATE, gameState)
+function publishStateUpdate(lobbyId, gameState) {
+    io.to(lobbyId).emit(MESSAGE_TYPES.GAMESTATE, gameState)
 }
 
 
@@ -44,14 +44,15 @@ function setupSocketHandlers(socket) {
 }
 
 io.on("connection", (socket => {
-    setupSocketHandlers(socket)
-
     const userId = socket.handshake.query?.userId
     const lobbyId = socket.handshake.query?.lobbyId
+
+    socket.join(lobbyId)
+    setupSocketHandlers(socket)
+
     console.log(`${userId} connected to lobby ${lobbyId}`)
 
-    // socket.emit(MESSAGE_TYPES.GAMESTATE, gameState.getState())
-
+    lobbyGameStateMap.get(lobbyId).update()
 }))
 
 // app.get("/", (req, res) => {
@@ -65,6 +66,7 @@ app.get("/new-lobby", (req, res) => {
         id = generateId(6)
     }
     lobbyGameStateMap.set(id, new GameState(
+        id,
         publishStateUpdate,
         BATTLEFIELD_WIDTH,
         BATTLEFIELD_HEIGHT

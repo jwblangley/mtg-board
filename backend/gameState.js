@@ -3,7 +3,8 @@ function generateEmptyBattlefield(width, height) {
 }
 
 class GameState {
-    constructor(publishStateUpdate, battlefieldWidth, battledieldHeight) {
+    constructor(lobbyId, publishStateUpdate, battlefieldWidth, battledieldHeight) {
+        this.lobbyId = lobbyId
         this.publishStateUpdate = publishStateUpdate
         // this.battlefield = generateEmptyBattlefield(battlefieldWidth, battledieldHeight)
 
@@ -25,7 +26,7 @@ class GameState {
     }
 
     update() {
-        this.publishStateUpdate(this.getState())
+        this.publishStateUpdate(this.lobbyId, this.getState())
     }
 
     moveCard(id, toI, toJ) {
