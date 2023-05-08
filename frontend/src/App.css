@@ -1,3 +1,17 @@
+.mainMenu {
+    padding: 2vw;
+    width: 50vw;
+    margin: auto;
+    margin-top: 2vw;
+    text-align: center;
+}
+
+.mainMenu form * {
+    margin: 1vmin;
+    vertical-align: middle;
+    display: inline-block;
+}
+
 .battlefieldCell {
     position: relative;
     display: inline-block;
