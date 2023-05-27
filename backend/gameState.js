@@ -34,6 +34,7 @@ class GameState {
     addUser(userId, hosting=false) {
         this.users.set(userId, {
             hosting: hosting,
+            ready: false,
             battlefield: this.testContent
             // battlefield: generateEmptyBattlefield(this.battlefieldWidth, this.battlefieldHeight)
         })

@@ -108,6 +108,20 @@ app.post("/join-lobby", (req, res) => {
     res.json({joined: true})
 })
 
+app.post("/player-ready", (req, res) => {
+    let userId = req.query.user
+    let lobbyId = req.query.lobby
+
+    let gameState = lobbyGameStateMap.get(lobbyId)
+    if (!!gameState) {
+        // TODO @James: Run checks
+        gameState.users.get(userId).ready = true
+        gameState.update()
+        res.json({ready: true})
+    }
+    res.json({ready: false, reason: "Lobby not find"})
+})
+
 
 server.listen(8000, () => {
     console.log("Listening on port 8000")

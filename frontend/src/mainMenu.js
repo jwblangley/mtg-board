@@ -12,7 +12,6 @@ const UserStatus = ({
     name,
     ready
 }) => {
-    ready = true
     return (
         <div
             className="userStatus"
@@ -49,11 +48,15 @@ const MainMenu = ({
     gameState,
     children
 }) => {
+    const serverRef = useContext(ServerContext)
+
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+
     const [username, setUsername] = useState("")
     const [lobbyInput, setLobbyInput] = useState("")
     const [confirmedLobby, setConfirmedLobby] = useState("")
     const [started, setStarted] = useState(false)
-    const serverRef = useContext(ServerContext)
+    const [locked, setLocked] = useState(false)
 
     function validUsername() {
         return username.trim().length !== 0
@@ -93,7 +96,20 @@ const MainMenu = ({
             })
     }
 
-    const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+    function onReady(onError) {
+        fetch(`${SERVER_ADDRESS}/player-ready?lobby=${lobbyInput.trim()}&user=${username}`, { method: "POST" })
+            .then(res => res.json())
+            .then(({ ready, reason }) => {
+                if (ready) {
+                    return
+                }
+
+                onError(`Player not ready: ${reason}`, {
+                    variant: "error"
+                })
+            })
+    }
+
 
     const hosting = lobbyConfirmed() && gameState?.users?.[username]?.hosting === true
 
@@ -132,8 +148,16 @@ const MainMenu = ({
 
             {confirmedLobby.length > 0 && (
                 <div>
-                    <hr />
-                    <br />
+                    <hr /><br />
+                    <div className="deckUpload">
+                        <Button
+                            variant="contained"
+                            onClick={() => onReady(enqueueSnackbar)}
+                        >
+                            Ready!
+                        </Button>
+                    </div>
+                    <br /><hr /><br />
                     <div className="userStatuses">
                         {
                             !! gameState.users && Object.keys(gameState.users).map(u => (
@@ -141,16 +165,18 @@ const MainMenu = ({
                                     key={u}
                                     name={u}
                                     ready={gameState.users[u].ready}
-                                    />
-                                    ))
-                                }
+                                />
+                            ))
+                            }
                     </div>
-                    <br />
-                    <hr />
-                    <br />
+                    <br /><hr /><br />
                     {hosting ? (
                         <Button
                             variant="contained"
+                            disabled={
+                                !gameState.users
+                                || !Object.keys(gameState.users).every(u => gameState.users[u].ready)
+                            }
                         >
                             Start!
                         </Button>
