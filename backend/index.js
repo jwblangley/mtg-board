@@ -7,6 +7,7 @@ const { Server } = require("socket.io");
 require("dotenv").config()
 
 const { GameState } = require("./gameState")
+const { parseDeck } = require("./deckManager")
 const { generateId } = require("./lobbyGeneration")
 const { MESSAGE_TYPES } = require("./constants")
 
@@ -78,14 +79,14 @@ app.get("/new-lobby", (req, res) => {
     ))
     console.log(`New lobby: ${id}`)
 
-    let userId = req.query.user
+    const userId = req.query.user
     lobbyGameStateMap.get(id).addUser(userId, hosting=true)
     res.json({lobbyId: id})
 })
 
 app.post("/join-lobby", (req, res) => {
-    let lobbyId = req.query.lobby
-    let userId = req.query.user
+    const lobbyId = req.query.lobby
+    const userId = req.query.user
 
     if (!lobbyGameStateMap.has(lobbyId)) {
         console.log(`${userId} tried to join non-existent lobby: ${lobbyId}`)
@@ -111,20 +112,25 @@ app.post("/join-lobby", (req, res) => {
 })
 
 app.post("/player-ready", (req, res) => {
-    let userId = req.query.user
-    let lobbyId = req.query.lobby
-
-    console.log(req.body["deckConfig"])
+    const userId = req.query.user
+    const lobbyId = req.query.lobby
 
     let gameState = lobbyGameStateMap.get(lobbyId)
-    if (!!gameState) {
-        // TODO @James: Run checks
-        gameState.users.get(userId).ready = true
-        gameState.update()
-        res.json({ready: true})
+    if (!gameState) {
+        res.json({ready: false, reason: "Lobby not found"})
         return
     }
-    res.json({ready: false, reason: "Lobby not found"})
+
+    const deckConfig = req.body["deckConfig"]
+    const parsedDeck = parseDeck(deckConfig)
+    if (!parsedDeck.deck) {
+        res.json({ready: false, reason: parsedDeck.reason})
+        return
+    }
+
+    gameState.users.get(userId).ready = true
+    gameState.update()
+    res.json({ready: true})
 })
 
 

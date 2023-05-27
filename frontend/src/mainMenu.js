@@ -210,7 +210,7 @@ const MainMenu = ({
                                     ready={gameState.users[u].ready}
                                 />
                             ))
-                            }
+                        }
                     </div>
                     <br /><hr /><br />
                     {hosting ? (
