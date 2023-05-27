@@ -2,15 +2,17 @@ function generateEmptyBattlefield(width, height) {
     return Array(height).fill().map(() => Array(width).fill([]))
 }
 
+
 class GameState {
-    constructor(lobbyId, publishStateUpdate, battlefieldWidth, battledieldHeight) {
+    constructor(lobbyId, publishStateUpdate, battlefieldWidth, battlefieldHeight) {
         this.lobbyId = lobbyId
         this.publishStateUpdate = publishStateUpdate
-        // this.battlefield = generateEmptyBattlefield(battlefieldWidth, battledieldHeight)
+        this.battlefieldWidth = battlefieldWidth
+        this.battlefieldHeight = battlefieldHeight
 
         // Set up test content
-        const testContent = generateEmptyBattlefield(battlefieldWidth, battledieldHeight)
-        testContent[0][0] = [
+        this.testContent = generateEmptyBattlefield(battlefieldWidth, battlefieldHeight)
+        this.testContent[0][0] = [
             { id: "a" },
             { id: "b" },
             { id: "c" },
@@ -18,11 +20,21 @@ class GameState {
             { id: "e" }
         ]
 
-        this.battlefield = testContent
+        this.started = false
+        this.users = new Map()
     }
 
     getState() {
-        return this.battlefield
+        return {
+            started: this.started,
+            users: Object.fromEntries(this.users)
+        }
+    }
+
+    addUser(userId) {
+        this.users.set(userId, this.testContent)
+        // this.users.set(userId, generateEmptyBattlefield(this.battlefieldWidth, this.battlefieldHeight))
+        this.update()
     }
 
     update() {

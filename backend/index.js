@@ -72,7 +72,36 @@ app.get("/new-lobby", (req, res) => {
         BATTLEFIELD_HEIGHT
     ))
     console.log(`New lobby: ${id}`)
+
+    let userId = req.query.user
+    lobbyGameStateMap.get(id).addUser(userId)
     res.json({lobbyId: id})
+})
+
+app.post("/join-lobby", (req, res) => {
+    let lobbyId = req.query.lobby
+    let userId = req.query.user
+
+    if (!lobbyGameStateMap.has(lobbyId)) {
+        console.log(`${userId} tried to join non-existent lobby: ${lobbyId}`)
+        res.json({joined: false, reason: "Lobby does not exist"})
+        return
+    }
+
+    gameState = lobbyGameStateMap.get(lobbyId)
+    if (gameState.users.has(userId)) {
+        console.log(`${userId} rejoined lobby: ${lobbyId}`)
+        res.json({joined: true})
+        return
+    }
+    if (gameState.started) {
+        console.log(`New user: ${userId} denied entry to started lobby ${lobbyId}`)
+        res.json({joined: false, reason: "New users cannot join started lobbies"})
+        return
+    }
+
+    gameState.addUser(userId)
+    res.json({joined: true})
 })
 
 

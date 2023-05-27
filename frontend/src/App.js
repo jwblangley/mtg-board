@@ -1,6 +1,7 @@
 import './App.css';
 
 import { useState } from 'react';
+import { SnackbarProvider } from 'notistack';
 
 import Battlefield from "./battlefield"
 import Library from "./library"
@@ -24,20 +25,22 @@ const App = () => {
       url={SERVER_ADDRESS}
       setGameState={setBattlefieldContent}
     >
-      <MainMenu
-        propagateConfirmedUser={setUser}
-        propagateConfirmedLobby={setLobby}
-      >
-        <DraggableCanvas>
-            <SelectedCard card={selectedCard} />
-            <Battlefield
-              content={battlefieldContent}
-              scale={battlefieldScale}
-              setSelectedCard={setSelectedCard}
-            />
-            <Library />
-        </DraggableCanvas>
-      </MainMenu>
+      <SnackbarProvider>
+        <MainMenu
+          propagateConfirmedUser={setUser}
+          propagateConfirmedLobby={setLobby}
+        >
+          <DraggableCanvas>
+              <SelectedCard card={selectedCard} />
+              <Battlefield
+                content={battlefieldContent}
+                scale={battlefieldScale}
+                setSelectedCard={setSelectedCard}
+              />
+              <Library />
+          </DraggableCanvas>
+        </MainMenu>
+      </SnackbarProvider>
     </ServerProvider>
   );
 }
