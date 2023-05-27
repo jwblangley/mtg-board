@@ -1,6 +1,7 @@
 const express = require("express")
 const http = require("http")
 const cors = require("cors")
+const bodyParser = require('body-parser')
 
 const { Server } = require("socket.io");
 require("dotenv").config()
@@ -19,6 +20,7 @@ const corsValues = {
 
 const app = express()
 app.use(cors(corsValues))
+app.use(bodyParser.json())
 const server = http.createServer(app)
 
 const io = new Server(server, {
@@ -111,6 +113,8 @@ app.post("/join-lobby", (req, res) => {
 app.post("/player-ready", (req, res) => {
     let userId = req.query.user
     let lobbyId = req.query.lobby
+
+    console.log(req.body["deckConfig"])
 
     let gameState = lobbyGameStateMap.get(lobbyId)
     if (!!gameState) {

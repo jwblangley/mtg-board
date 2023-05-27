@@ -57,6 +57,7 @@ const MainMenu = ({
     const [confirmedLobby, setConfirmedLobby] = useState("")
     const [started, setStarted] = useState(false)
     const [locked, setLocked] = useState(false)
+    const [deckConfig, setDeckConfig] = useState("")
 
     function validUsername() {
         return username.trim().length !== 0
@@ -102,7 +103,13 @@ const MainMenu = ({
     function onReady(onError) {
         fetch(
             `${SERVER_ADDRESS}/player-ready?lobby=${lobbyInput.trim()}&user=${username}`,
-            { method: "POST" }
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({deckConfig: deckConfig})
+            }
         )
             .then(res => res.json())
             .then(({ ready, reason }) => {
@@ -174,10 +181,21 @@ const MainMenu = ({
                 <div>
                     <hr /><br />
                     <div className="deckUpload">
-                        <Button
+                        <TextField
+                            label="Deck Configuration"
+                            multiline
                             disabled={!! locked}
+                            error={deckConfig.trim().length === 0}
+                            rows={8}
+                            onChange={e => setDeckConfig(e.target.value)}
+                        />
+                        <Button
+                            disabled={!! locked || deckConfig.trim().length === 0}
                             variant="contained"
                             onClick={() => onReady(enqueueSnackbar)}
+                            style={{
+                                "margin": "auto"
+                            }}
                         >
                             Ready!
                         </Button>

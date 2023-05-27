@@ -52,3 +52,8 @@
     width: fit-content;
     margin-right: 3vmin;
 }
+
+.deckUpload * {
+    margin: 1vmin;
+    display: block !important;
+}
