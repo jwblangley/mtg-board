@@ -1,10 +1,12 @@
 const fs = require("fs")
 const crypto = require("crypto")
+const multer = require('multer')
+
+const DATA_DIRECTORY = process.env["CARD_IMAGE_LOCATION"]
 
 
 function listCardImages() {
-    const dir = process.env["CARD_IMAGE_LOCATION"]
-    return fs.readdirSync(dir)
+    return fs.readdirSync(DATA_DIRECTORY)
 }
 
 function imageFromName(knownCards, name) {
@@ -71,6 +73,28 @@ function parseDeck(deckConfig) {
     return {deck: deck, reason: "Success!"}
 }
 
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, DATA_DIRECTORY)
+    },
+    filename: function (req, file, cb) {
+        // Keep exact original file name
+        cb(null, file.originalname)
+    }
+})
+const upload = multer({ storage: storage }).array('file')
+
+function uploadCards(req, res) {
+    upload(req, res, async function (err) {
+        if (err instanceof multer.MulterError) {
+            return res.status(500).json(err)
+        } else if (err) {
+            return res.status(500).json(err)
+        }
+        res.send(`Successfully uploaded ${req.files.length} card(s)`)
+    })
+}
+
 module.exports = {
-    parseDeck
+    parseDeck, uploadCards
 }

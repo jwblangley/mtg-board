@@ -57,3 +57,17 @@
     margin: 1vmin;
     display: block !important;
 }
+
+.deckUploadDrop {
+    position: relative;
+    height: 10vh;
+    margin: 2vmin;
+}
+
+.deckUploadDrop p {
+    position: absolute;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
+}

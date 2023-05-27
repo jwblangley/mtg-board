@@ -7,7 +7,7 @@ const { Server } = require("socket.io");
 require("dotenv").config()
 
 const { GameState } = require("./gameState")
-const { parseDeck } = require("./deckManager")
+const { parseDeck, uploadCards } = require("./deckManager")
 const { generateId } = require("./lobbyGeneration")
 const { MESSAGE_TYPES } = require("./constants")
 
@@ -128,11 +128,13 @@ app.post("/player-ready", (req, res) => {
         return
     }
 
+    gameState.setDeck(userId, parsedDeck.deck)
     gameState.users.get(userId).ready = true
     gameState.update()
     res.json({ready: true})
 })
 
+app.post("/upload-cards", uploadCards)
 
 server.listen(8000, () => {
     console.log("Listening on port 8000")

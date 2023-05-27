@@ -3,10 +3,16 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useSnackbar } from 'notistack';
 import { Paper, Typography, Button, TextField } from '@mui/material';
+import { Progress } from 'reactstrap'
+import axios from 'axios'
 
 import { ServerContext } from './serverProvider';
+import Dropzone from './dropzone';
 
 const SERVER_ADDRESS = process.env["REACT_APP_SERVER_ADDRESS"]
+
+const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png"]
+
 
 const UserStatus = ({
     name,
@@ -58,6 +64,8 @@ const MainMenu = ({
     const [started, setStarted] = useState(false)
     const [locked, setLocked] = useState(false)
     const [deckConfig, setDeckConfig] = useState("")
+    const [uploading, setUploading] = useState(false)
+    const [uploadProgress, setUploadProgress] = useState(0)
 
     function validUsername() {
         return username.trim().length !== 0
@@ -124,8 +132,41 @@ const MainMenu = ({
             })
     }
 
+    function handleFilesDropped(files, onError) {
+        files = Array.from(files)
+        const allowedFiles = files.filter(f => ALLOWED_MIME_TYPES.includes(f.type))
+        const disallowedFiles = files.filter(f => !ALLOWED_MIME_TYPES.includes(f.type))
 
-    const hosting = lobbyConfirmed() && gameState?.users?.[username]?.hosting === true
+        // Report disallowed files
+        disallowedFiles.forEach(f => onError(`Could not upload "${f.name}" - unsupported type`, { variant: "error" }))
+
+        if (allowedFiles.length > 0) {
+            setUploading(true)
+            setUploadProgress(0)
+
+            const url = `${process.env["REACT_APP_SERVER_ADDRESS"]}/upload-cards`
+            const formData = new FormData()
+            for (let i = 0; i < allowedFiles.length; i++) {
+                formData.append("file", allowedFiles[i])
+            }
+
+            setTimeout( ()=> {
+                axios.post(url, formData, {
+                    onUploadProgress: p => { setUploadProgress(p.loaded / p.total * 100)}
+                }).then(res => {
+                    if (res.status !== 200) {
+                        onError("There was an error uploading some files. Please try again.", {
+                            variant: "error"
+                        })
+                    }
+                    setUploading(false)
+                })
+            }, 500) // Delay so that upload is clearly completed
+
+        }
+    }
+
+    const hosting = !! lobbyConfirmed() && gameState?.users?.[username]?.hosting === true
 
     if (started) {
         return children
@@ -140,7 +181,7 @@ const MainMenu = ({
                 MTG Board
             </Typography>
             <TextField
-                disabled={!! locked  || !! confirmedLobby}
+                disabled={uploading ||  locked  || !! confirmedLobby}
                 error={!validUsername()}
                 label="User name"
                 value={username}
@@ -148,7 +189,7 @@ const MainMenu = ({
             />
             <form style={{margin: "1vmin"}}>
                 <Button
-                    disabled={!!locked || !!confirmedLobby || !validUsername()}
+                    disabled={uploading || locked || !!confirmedLobby || !validUsername()}
                     variant="contained"
                     style={{display: "inline-block"}}
                     onClick={onCreate}
@@ -158,7 +199,8 @@ const MainMenu = ({
                 <Typography>or</Typography>
                 <Button
                     disabled={
-                        !! locked
+                        uploading
+                        ||locked
                         || !! confirmedLobby
                         || !validUsername()
                         || lobbyInput.trim().length <= 0
@@ -184,13 +226,38 @@ const MainMenu = ({
                         <TextField
                             label="Deck Configuration"
                             multiline
-                            disabled={!! locked}
+                            disabled={uploading || locked}
                             error={deckConfig.trim().length === 0}
                             rows={8}
                             onChange={e => setDeckConfig(e.target.value)}
                         />
+                        <Dropzone
+                            drop={files => {
+                                if (uploading || locked) {
+                                    return
+                                }
+                                handleFilesDropped(files, enqueueSnackbar)
+                            }}
+                        >
+                            <Paper className="deckUploadDrop" elevation={10}>
+                                <Typography
+                                    style={{color: uploading || locked ? "lightgrey" : "initial"}}
+                                >
+                                    Drag files here to upload your deck
+                                </Typography>
+                            </Paper>
+                        </Dropzone>
+                        <Progress
+                            max="100"
+                            color="success"
+                            striped
+                            value={uploadProgress}
+                            style={{height: "auto"}}
+                        >
+                            {Math.round(uploadProgress, 2)}%
+                        </Progress>
                         <Button
-                            disabled={!! locked || deckConfig.trim().length === 0}
+                            disabled={uploading || locked || deckConfig.trim().length === 0}
                             variant="contained"
                             onClick={() => onReady(enqueueSnackbar)}
                             style={{

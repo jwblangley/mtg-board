@@ -10,18 +10,9 @@ class GameState {
         this.battlefieldWidth = battlefieldWidth
         this.battlefieldHeight = battlefieldHeight
 
-        // Set up test content
-        this.testContent = generateEmptyBattlefield(battlefieldWidth, battlefieldHeight)
-        this.testContent[0][0] = [
-            { id: "a" },
-            { id: "b" },
-            { id: "c" },
-            { id: "d" },
-            { id: "e" }
-        ]
-
         this.started = false
         this.users = new Map()
+        this.decks = new Map()
     }
 
     getState() {
@@ -31,18 +22,23 @@ class GameState {
         }
     }
 
+    update() {
+        this.publishStateUpdate(this.lobbyId, this.getState())
+    }
+
     addUser(userId, hosting=false) {
         this.users.set(userId, {
             hosting: hosting,
             ready: false,
-            battlefield: this.testContent
-            // battlefield: generateEmptyBattlefield(this.battlefieldWidth, this.battlefieldHeight)
+            battlefield: generateEmptyBattlefield(this.battlefieldWidth, this.battlefieldHeight)
         })
         this.update()
     }
 
-    update() {
-        this.publishStateUpdate(this.lobbyId, this.getState())
+    setDeck(userId, deck) {
+        if (this.users.has(userId)) {
+            this.decks.set(userId, deck)
+        }
     }
 
     moveCard(id, toI, toJ) {
