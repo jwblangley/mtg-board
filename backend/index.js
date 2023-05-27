@@ -118,8 +118,9 @@ app.post("/player-ready", (req, res) => {
         gameState.users.get(userId).ready = true
         gameState.update()
         res.json({ready: true})
+        return
     }
-    res.json({ready: false, reason: "Lobby not find"})
+    res.json({ready: false, reason: "Lobby not found"})
 })
 
 
