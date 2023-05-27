@@ -20,6 +20,10 @@ const App = () => {
   const [gameState, setGameState] = useState({})
   const [selectedCard, setSelectedCard] = useState()
 
+  if (process.env["REACT_APP_DEBUG"] === "true") {
+    console.log(gameState)
+  }
+
   return (
     <ServerProvider
       url={SERVER_ADDRESS}

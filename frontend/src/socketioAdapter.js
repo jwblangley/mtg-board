@@ -20,7 +20,6 @@ class SocketIOAdapter {
         this.socket.connect()
 
         this.socket.on(MESSAGE_TYPES.GAMESTATE, (gameState) => {
-            console.log(gameState)
             this.setGameState(gameState)
         })
 
