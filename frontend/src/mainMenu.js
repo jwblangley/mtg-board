@@ -1,11 +1,47 @@
 import React, { useState, useContext } from 'react'
-
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useSnackbar } from 'notistack';
 
 import { Paper, Typography, Button, TextField } from '@mui/material';
 import { ServerContext } from './serverProvider';
 
 const SERVER_ADDRESS = process.env["REACT_APP_SERVER_ADDRESS"]
+
+const UserStatus = ({
+    name,
+    ready
+}) => {
+    ready = true
+    return (
+        <div
+            className="userStatus"
+            >
+            <span
+                style={{position: "relative"}}
+            >
+            <AccountCircleIcon
+                color="primary"
+                fontSize='large'
+                />
+            {
+                ready && (
+                    <CheckCircleIcon
+                    color="success"
+                    fontSize="small"
+                    style={{
+                        position:"absolute",
+                        top: "-4px",
+                        left: "25px"
+                    }}
+                    />
+                    )
+                }
+            </span>
+            <Typography>{name}</Typography>
+        </div>
+    )
+}
 
 const MainMenu = ({
     propagateConfirmedUser,
@@ -96,6 +132,20 @@ const MainMenu = ({
 
             {confirmedLobby.length > 0 && (
                 <div>
+                    <hr />
+                    <br />
+                    <div className="userStatuses">
+                        {
+                            !! gameState.users && Object.keys(gameState.users).map(u => (
+                                <UserStatus
+                                    key={u}
+                                    name={u}
+                                    ready={gameState.users[u].ready}
+                                    />
+                                    ))
+                                }
+                    </div>
+                    <br />
                     <hr />
                     <br />
                     {hosting ? (

@@ -46,3 +46,9 @@
     height: 70vh;
     overflow-y: scroll;
 }
+
+.userStatus {
+    display: inline-block;
+    width: fit-content;
+    margin-right: 3vmin;
+}

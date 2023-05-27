@@ -17,7 +17,7 @@ const App = () => {
   const [user, setUser] = useState("")
   const [lobby, setLobby] = useState("")
   const [battlefieldScale, setBattlefieldScale] = useState(0.5)
-  const [gameState, setGameState] = useState([[[]]])
+  const [gameState, setGameState] = useState({})
   const [selectedCard, setSelectedCard] = useState()
 
   return (
