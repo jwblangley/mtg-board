@@ -79,7 +79,10 @@ const MainMenu = ({
     }
 
     function onJoin(onError) {
-        fetch(`${SERVER_ADDRESS}/join-lobby?lobby=${lobbyInput.trim()}&user=${username}`, {method: "POST"})
+        fetch(
+            `${SERVER_ADDRESS}/join-lobby?lobby=${lobbyInput.trim()}&user=${username}`,
+            {method: "POST"}
+        )
             .then(res => res.json())
             .then(({joined, reason}) => {
                 if (joined) {
@@ -97,7 +100,10 @@ const MainMenu = ({
     }
 
     function onReady(onError) {
-        fetch(`${SERVER_ADDRESS}/player-ready?lobby=${lobbyInput.trim()}&user=${username}`, { method: "POST" })
+        fetch(
+            `${SERVER_ADDRESS}/player-ready?lobby=${lobbyInput.trim()}&user=${username}`,
+            { method: "POST" }
+        )
             .then(res => res.json())
             .then(({ ready, reason }) => {
                 if (ready) {
@@ -118,8 +124,20 @@ const MainMenu = ({
     }
     return (
         <Paper className="mainMenu" elevation={20}>
-            <Typography variant="h2" component="h1" style={{marginBottom: "2vmin"}}>MTG Board</Typography>
-            <TextField  disabled={!!confirmedLobby} error={!validUsername()} label="User name" value={username} onChange={e => setUsername(e.target.value)}/>
+            <Typography
+                variant="h2"
+                component="h1"
+                style={{marginBottom: "2vmin"}}
+            >
+                MTG Board
+            </Typography>
+            <TextField
+                disabled={!!confirmedLobby}
+                error={!validUsername()}
+                label="User name"
+                value={username}
+                onChange={e => setUsername(e.target.value)}
+            />
             <form style={{margin: "1vmin"}}>
                 <Button
                     disabled={!!confirmedLobby || !validUsername()}
@@ -131,7 +149,11 @@ const MainMenu = ({
                 </Button>
                 <Typography>or</Typography>
                 <Button
-                    disabled={!!confirmedLobby || !validUsername() || lobbyInput.trim().length <= 0}
+                    disabled={
+                        !!confirmedLobby
+                        || !validUsername()
+                        || lobbyInput.trim().length <= 0
+                    }
                     variant="contained"
                     style={{display: "inline-block"}}
                     onClick={() => onJoin(enqueueSnackbar)}
