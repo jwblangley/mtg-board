@@ -1,3 +1,8 @@
+const { shuffleInPlace } = require("./deckManager")
+
+const STARTING_DECK_SIZE = 7
+
+
 function generateEmptyBattlefield(width, height) {
     return Array(height).fill().map(() => Array(width).fill([]))
 }
@@ -30,6 +35,8 @@ class GameState {
         this.users.set(userId, {
             hosting: hosting,
             ready: false,
+            hand: [],
+            library: [],
             battlefield: generateEmptyBattlefield(this.battlefieldWidth, this.battlefieldHeight)
         })
         this.update()
@@ -39,6 +46,28 @@ class GameState {
         if (this.users.has(userId)) {
             this.decks.set(userId, deck)
         }
+    }
+
+    startGame() {
+        if (!Array.from(this.users.keys()).every(u => this.users.get(u).ready))
+        {
+            return false
+        }
+
+        if (!Array.from(this.users.keys).every(u => this.decks.has(u))) {
+            return false
+        }
+
+        Array.from(this.users.keys()).forEach(u => {
+            let tempDeck = [...this.decks.get(u).deck]
+            shuffleInPlace(tempDeck)
+            this.users.get(u).hand = tempDeck.slice(0, STARTING_DECK_SIZE)
+            this.users.get(u).library = tempDeck.slice(STARTING_DECK_SIZE)
+        })
+
+        this.started = true
+        this.update()
+        return true
     }
 
     moveCard(id, toI, toJ) {

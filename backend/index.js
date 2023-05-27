@@ -136,6 +136,19 @@ app.post("/player-ready", (req, res) => {
 
 app.post("/upload-cards", uploadCards)
 
+app.post("/start-game", (req, res) => {
+    const lobbyId = req.query.lobby
+    let gameState = lobbyGameStateMap.get(lobbyId)
+    if (!gameState) {
+        res.status(500).send()
+        return
+    }
+    console.log(`Starting game in lobby ${lobbyId}`)
+
+    const success = gameState.startGame()
+    res.status(success ? 200 : 500).send()
+})
+
 server.listen(8000, () => {
     console.log("Listening on port 8000")
 })

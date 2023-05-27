@@ -61,7 +61,6 @@ const MainMenu = ({
     const [username, setUsername] = useState("")
     const [lobbyInput, setLobbyInput] = useState("")
     const [confirmedLobby, setConfirmedLobby] = useState("")
-    const [started, setStarted] = useState(false)
     const [locked, setLocked] = useState(false)
     const [deckConfig, setDeckConfig] = useState("")
     const [uploading, setUploading] = useState(false)
@@ -166,9 +165,24 @@ const MainMenu = ({
         }
     }
 
+    function startGame(onError) {
+        fetch(
+            `${SERVER_ADDRESS}/start-game?lobby=${lobbyInput.trim()}`,
+            {
+                method: "POST",
+            }
+        ).then(res => {
+            if (res.status !== 200) {
+                onError(`Unable to start game!`, {
+                    variant: "error"
+                })
+            }
+        })
+    }
+
     const hosting = !! lobbyConfirmed() && gameState?.users?.[username]?.hosting === true
 
-    if (started) {
+    if (gameState?.started) {
         return children
     }
     return (
@@ -284,9 +298,11 @@ const MainMenu = ({
                         <Button
                             variant="contained"
                             disabled={
+                                uploading ||
                                 !gameState.users
                                 || !Object.keys(gameState.users).every(u => gameState.users[u].ready)
                             }
+                            onClick={() => startGame(enqueueSnackbar)}
                         >
                             Start!
                         </Button>
