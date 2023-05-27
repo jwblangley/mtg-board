@@ -2,8 +2,8 @@ import React, { useState, useContext } from 'react'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useSnackbar } from 'notistack';
-
 import { Paper, Typography, Button, TextField } from '@mui/material';
+
 import { ServerContext } from './serverProvider';
 
 const SERVER_ADDRESS = process.env["REACT_APP_SERVER_ADDRESS"]
@@ -107,6 +107,7 @@ const MainMenu = ({
             .then(res => res.json())
             .then(({ ready, reason }) => {
                 if (ready) {
+                    setLocked(true)
                     return
                 }
 
@@ -132,7 +133,7 @@ const MainMenu = ({
                 MTG Board
             </Typography>
             <TextField
-                disabled={!!confirmedLobby}
+                disabled={!! locked  || !! confirmedLobby}
                 error={!validUsername()}
                 label="User name"
                 value={username}
@@ -140,7 +141,7 @@ const MainMenu = ({
             />
             <form style={{margin: "1vmin"}}>
                 <Button
-                    disabled={!!confirmedLobby || !validUsername()}
+                    disabled={!!locked || !!confirmedLobby || !validUsername()}
                     variant="contained"
                     style={{display: "inline-block"}}
                     onClick={onCreate}
@@ -150,7 +151,8 @@ const MainMenu = ({
                 <Typography>or</Typography>
                 <Button
                     disabled={
-                        !!confirmedLobby
+                        !! locked
+                        || !! confirmedLobby
                         || !validUsername()
                         || lobbyInput.trim().length <= 0
                     }
@@ -162,7 +164,7 @@ const MainMenu = ({
                 </Button>
                 <TextField
                     label="Lobby code"
-                    disabled={!!confirmedLobby}
+                    disabled={!! locked || !! confirmedLobby}
                     value={lobbyInput}
                     onChange={e => setLobbyInput(e.target.value)}
                 />
@@ -173,6 +175,7 @@ const MainMenu = ({
                     <hr /><br />
                     <div className="deckUpload">
                         <Button
+                            disabled={!! locked}
                             variant="contained"
                             onClick={() => onReady(enqueueSnackbar)}
                         >
