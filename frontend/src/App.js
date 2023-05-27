@@ -17,23 +17,24 @@ const App = () => {
   const [user, setUser] = useState("")
   const [lobby, setLobby] = useState("")
   const [battlefieldScale, setBattlefieldScale] = useState(0.5)
-  const [battlefieldContent, setBattlefieldContent] = useState([[[]]])
+  const [gameState, setGameState] = useState([[[]]])
   const [selectedCard, setSelectedCard] = useState()
 
   return (
     <ServerProvider
       url={SERVER_ADDRESS}
-      setGameState={setBattlefieldContent}
+      setGameState={setGameState}
     >
       <SnackbarProvider>
         <MainMenu
           propagateConfirmedUser={setUser}
           propagateConfirmedLobby={setLobby}
+          gameState={gameState}
         >
           <DraggableCanvas>
               <SelectedCard card={selectedCard} />
               <Battlefield
-                content={battlefieldContent}
+                content={gameState}
                 scale={battlefieldScale}
                 setSelectedCard={setSelectedCard}
               />

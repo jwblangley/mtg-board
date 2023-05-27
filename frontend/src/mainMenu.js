@@ -10,12 +10,12 @@ const SERVER_ADDRESS = process.env["REACT_APP_SERVER_ADDRESS"]
 const MainMenu = ({
     propagateConfirmedUser,
     propagateConfirmedLobby,
+    gameState,
     children
 }) => {
     const [username, setUsername] = useState("")
     const [lobbyInput, setLobbyInput] = useState("")
     const [confirmedLobby, setConfirmedLobby] = useState("")
-    const [hosting, setHosting] = useState(false)
     const [started, setStarted] = useState(false)
     const serverRef = useContext(ServerContext)
 
@@ -23,10 +23,9 @@ const MainMenu = ({
         return username.trim().length !== 0
     }
 
-    // function ready() {
-    //     return false
-    //     // return confirmedLobby.trim().length > 0
-    // }
+    function lobbyConfirmed() {
+        return confirmedLobby.trim().length > 0
+    }
 
     function onCreate() {
         fetch(`${SERVER_ADDRESS}/new-lobby?user=${username}`)
@@ -36,7 +35,6 @@ const MainMenu = ({
                 setLobbyInput(lobbyId)
                 propagateConfirmedLobby(lobbyId)
                 propagateConfirmedUser(username)
-                setHosting(true)
                 serverRef.current.connect(lobbyId, username)
             })
     }
@@ -49,6 +47,7 @@ const MainMenu = ({
                     setConfirmedLobby(lobbyInput)
                     propagateConfirmedLobby(lobbyInput)
                     propagateConfirmedUser(username)
+                    serverRef.current.connect(lobbyInput, username)
                     return
                 }
 
@@ -59,6 +58,8 @@ const MainMenu = ({
     }
 
     const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+
+    const hosting = lobbyConfirmed() && gameState?.users?.[username]?.hosting === true
 
     if (started) {
         return children
@@ -92,6 +93,22 @@ const MainMenu = ({
                     onChange={e => setLobbyInput(e.target.value)}
                 />
             </form>
+
+            {confirmedLobby.length > 0 && (
+                <div>
+                    <hr />
+                    <br />
+                    {hosting ? (
+                        <Button
+                            variant="contained"
+                        >
+                            Start!
+                        </Button>
+                    ) : (
+                        <Typography>Only the host can start the game</Typography>
+                    )}
+                </div>
+            )}
         </Paper>
     )
 }

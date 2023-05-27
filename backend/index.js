@@ -52,7 +52,10 @@ io.on("connection", (socket => {
 
     console.log(`${userId} connected to lobby ${lobbyId}`)
 
-    lobbyGameStateMap.get(lobbyId).update()
+    gameState = lobbyGameStateMap.get(lobbyId)
+    if (!!gameState) {
+        gameState.update()
+    }
 }))
 
 // app.get("/", (req, res) => {
@@ -74,7 +77,7 @@ app.get("/new-lobby", (req, res) => {
     console.log(`New lobby: ${id}`)
 
     let userId = req.query.user
-    lobbyGameStateMap.get(id).addUser(userId)
+    lobbyGameStateMap.get(id).addUser(userId, hosting=true)
     res.json({lobbyId: id})
 })
 
@@ -91,6 +94,7 @@ app.post("/join-lobby", (req, res) => {
     gameState = lobbyGameStateMap.get(lobbyId)
     if (gameState.users.has(userId)) {
         console.log(`${userId} rejoined lobby: ${lobbyId}`)
+        gameState.update()
         res.json({joined: true})
         return
     }

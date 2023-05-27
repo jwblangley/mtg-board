@@ -31,9 +31,12 @@ class GameState {
         }
     }
 
-    addUser(userId) {
-        this.users.set(userId, this.testContent)
-        // this.users.set(userId, generateEmptyBattlefield(this.battlefieldWidth, this.battlefieldHeight))
+    addUser(userId, hosting=false) {
+        this.users.set(userId, {
+            hosting: hosting,
+            battlefield: this.testContent
+            // battlefield: generateEmptyBattlefield(this.battlefieldWidth, this.battlefieldHeight)
+        })
         this.update()
     }
 
