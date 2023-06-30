@@ -88,10 +88,13 @@ const Row = ({
 }
 
 const Battlefield = ({
-    content,
+    user,
+    currentUser,
+    gameState,
     scale,
     setSelectedCard
 }) => {
+    const content = gameState.users[user].battlefield
     return (
         <Paper
             className="battlefield"

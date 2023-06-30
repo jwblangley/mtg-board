@@ -38,7 +38,9 @@ const App = () => {
           <DraggableCanvas>
               <SelectedCard card={selectedCard} />
               <Battlefield
-                content={gameState}
+                user={user}
+                currentUser={user}
+                gameState={gameState}
                 scale={battlefieldScale}
                 setSelectedCard={setSelectedCard}
               />
