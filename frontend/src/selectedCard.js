@@ -1,8 +1,8 @@
 import React from 'react'
 
-import ranar from "./Ranar the Ever-Watchful-khc-2.png"
+const SERVER_ADDRESS = process.env["REACT_APP_SERVER_ADDRESS"]
 
-const emptyImg = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+const EMPTY_IMG = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
 
 
 const SelectedCard = ({ card }) => {
@@ -10,7 +10,7 @@ const SelectedCard = ({ card }) => {
         <div className="selectedCard">
             <img
                 alt="Card Preview"
-                src={!!card?.id ? ranar : emptyImg}
+                src={!!card ? `${SERVER_ADDRESS}/card-image/${card.image}` : EMPTY_IMG}
                 style={{
                     width: "100%",
                 }}

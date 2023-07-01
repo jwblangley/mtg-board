@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { SnackbarProvider } from 'notistack';
 
 import Battlefield from "./battlefield"
+import Hand from "./hand"
 import Library from "./library"
 import { ServerProvider } from './serverProvider';
 import DraggableCanvas from './draggable';
@@ -36,6 +37,7 @@ const App = () => {
           gameState={gameState}
         >
           <DraggableCanvas>
+            <span>
               <SelectedCard card={selectedCard} />
               <Battlefield
                 user={user}
@@ -44,7 +46,14 @@ const App = () => {
                 scale={battlefieldScale}
                 setSelectedCard={setSelectedCard}
               />
+            </span>
+            <span>
               <Library />
+              <Hand
+                cards={gameState?.users?.[user]?.hand}
+                setSelectedCard={setSelectedCard}
+              />
+            </span>
           </DraggableCanvas>
         </MainMenu>
       </SnackbarProvider>
