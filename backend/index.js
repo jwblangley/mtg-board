@@ -14,6 +14,8 @@ const { MESSAGE_TYPES } = require("./constants")
 const BATTLEFIELD_WIDTH = 7
 const BATTLEFIELD_HEIGHT = 4
 
+const CARD_IMAGE_DIRECTORY = process.env["CARD_IMAGE_LOCATION"]
+
 
 const corsValues = {
     origin: process.env["CORS_ALLOW"]
@@ -61,10 +63,9 @@ io.on("connection", (socket => {
     }
 }))
 
-// app.get("/", (req, res) => {
-//     res.send("<h1>Hello World!</h1>")
-//     // res.sendFile(__dirname + '/index.html');
-// });
+app.get("/card-image/:imageName", (req, res) => {
+    res.sendFile(`${__dirname}/${CARD_IMAGE_DIRECTORY}/${req.params["imageName"]}`);
+});
 
 app.get("/new-lobby", (req, res) => {
     let id = ""
