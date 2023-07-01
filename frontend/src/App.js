@@ -37,7 +37,7 @@ const App = () => {
           gameState={gameState}
         >
           <DraggableCanvas>
-            <span>
+            <div>
               <SelectedCard card={selectedCard} />
               <Battlefield
                 user={user}
@@ -46,14 +46,14 @@ const App = () => {
                 scale={battlefieldScale}
                 setSelectedCard={setSelectedCard}
               />
-            </span>
-            <span>
+            </div>
+            <div>
               <Library />
               <Hand
                 cards={gameState?.users?.[user]?.hand}
                 setSelectedCard={setSelectedCard}
               />
-            </span>
+            </div>
           </DraggableCanvas>
         </MainMenu>
       </SnackbarProvider>
