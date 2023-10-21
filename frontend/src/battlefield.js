@@ -11,6 +11,7 @@ const Cell = ({
     content,
     i,
     j,
+    currentUser,
     setSelectedCard={setSelectedCard}
 }) => {
     let server = useContext(ServerContext)
@@ -19,7 +20,7 @@ const Cell = ({
             accept: content.length === STACK_MAX ? [] : DraggableTypes.CARD,
             canDrop: () => content.length < STACK_MAX,
             drop: (monitor) => {
-                server.current.moveCard(monitor.id, i, j)
+                server.current.moveCardToBattlefield(monitor.uuid, currentUser, i, j)
             },
             collect: (monitor) => ({
                 isOver: !! monitor.isOver(),
@@ -55,7 +56,7 @@ const Cell = ({
             )}
             {content.map((card, stackIndex) => (<Card
                 content={card}
-                key={card.id}
+                key={card.uuid}
                 stackIndex={stackIndex}
                 stackTotal={content.length}
                 setSelectedCard={setSelectedCard}
@@ -67,6 +68,7 @@ const Cell = ({
 const Row = ({
     content,
     i,
+    currentUser,
     setSelectedCard
 }) => {
     return (
@@ -81,6 +83,7 @@ const Row = ({
                 content={cell}
                 i={i} j={j}
                 key={`battlefieldCell-${i}-${j}`}
+                currentUser={currentUser}
                 setSelectedCard={setSelectedCard}
             />))}
         </div>
@@ -126,6 +129,7 @@ const Battlefield = ({
                         content={row}
                         i={i}
                         key={`battlefieldRow-${i}`}
+                        currentUser={currentUser}
                         setSelectedCard={setSelectedCard}
                     />))}
                 </Paper>

@@ -1,10 +1,15 @@
 const { shuffleInPlace } = require("./deckManager")
+const { Position } = require("./position")
 
 const STARTING_DECK_SIZE = 7
 
 
 function generateEmptyBattlefield(width, height) {
     return Array(height).fill().map(() => Array(width).fill([]))
+}
+
+function removeIndex(arr, i) {
+    return [...arr.slice(0, i), ...arr.slice(i + 1)]
 }
 
 
@@ -70,25 +75,87 @@ class GameState {
         return true
     }
 
-    moveCard(id, toI, toJ) {
-        const { i: fromI, j: fromJ, stackIndex: fromStackIndex, card } = this.findCard(id)
-        this.battlefield[fromI][fromJ] = this.battlefield[fromI][fromJ].filter(({id: cid}) => cid !== id)
-        this.battlefield[toI][toJ] = [...this.battlefield[toI][toJ], card]
+    moveCardToHand(cardUuid, userId) {
+        this.moveCard(cardUuid, new Position(userId, Position.LOCATIONS.HAND, 0))
+    }
+
+    moveCardToBattlefield(cardUuid, userId, i, j)
+    {
+        this.moveCard(cardUuid, new Position(userId, Position.LOCATIONS.BATTLEFIELD, {i, j, stackIndex: 0}))
+    }
+
+    moveCard(cardUuid, newPosition) {
+        const { card, position: oldPosition } = this.findCard(cardUuid)
+        const userId = oldPosition.userId
+
+        // Remove from old position
+        if (oldPosition.location === Position.LOCATIONS.HAND)
+        {
+            const oldHand = this.users.get(userId).hand
+            const newHand = removeIndex(oldHand, oldPosition.index)
+            this.users.get(userId).hand = newHand
+        }
+        else if (oldPosition.location === Position.LOCATIONS.BATTLEFIELD)
+        {
+            const {i, j, stackIndex} = oldPosition.index
+            const oldCell = this.users.get(userId).battlefield[i][j]
+            const newCell = removeIndex(oldCell, stackIndex)
+            this.users.get(userId).battlefield[i][j] = newCell
+        }
+        else
+        {
+            throw new Error(`Unknown position type: ${oldPosition.location}`)
+        }
+
+        // Add to new position.
+        // Ignores highest granularity part of Position.index
+        if (newPosition.location === Position.LOCATIONS.HAND)
+        {
+            const oldHand = this.users.get(userId).hand
+            const newHand = [...oldHand, card]
+            this.users.get(userId).hand = newHand
+        }
+        else if (newPosition.location === Position.LOCATIONS.BATTLEFIELD)
+        {
+            const {i, j, stackIndex} = newPosition.index
+            const oldCell = this.users.get(userId).battlefield[i][j]
+            const newCell = [...oldCell, card]
+            this.users.get(userId).battlefield[i][j] = newCell
+        }
+        else
+        {
+            throw new Error(`Unknown position type: ${newPosition.location}`)
+        }
+
         this.update()
     }
 
-    findCard(id) {
-        // TODO @James: More efficient solution
-        for (let i = 0; i < this.battlefield.length; i++) {
-            for (let j = 0; j < this.battlefield[i].length; j++) {
-                for (let stackIndex = 0; stackIndex < this.battlefield[i][j].length; stackIndex++) {
-                    const card = this.battlefield[i][j][stackIndex]
-                    if (card.id === id) {
-                        return {i, j, stackIndex, card}
+    findCard(cardUuid) {
+        // TODO: More efficient solution
+        for (const [userId, user] of this.users.entries())
+        {
+            // Check hand
+            for (let i = 0; i < user.hand.length; i++)
+            {
+                const card = user.hand[i]
+                if (card.uuid === cardUuid) {
+                    return {card, position: new Position(userId, Position.LOCATIONS.HAND, i)}
+                }
+            }
+
+            // Check battlefield
+            for (let i = 0; i < user.battlefield.length; i++) {
+                for (let j = 0; j < user.battlefield[i].length; j++) {
+                    for (let stackIndex = 0; stackIndex < user.battlefield[i][j].length; stackIndex++) {
+                        const card = user.battlefield[i][j][stackIndex]
+                        if (card.uuid === cardUuid) {
+                            return {card, position: new Position(userId, Position.LOCATIONS.BATTLEFIELD, {i, j, stackIndex})}
+                        }
                     }
                 }
             }
         }
+        throw new Error(`Could not find card: ${cardUuid}`)
     }
 }
 

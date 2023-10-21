@@ -2,7 +2,8 @@ import { io } from "socket.io-client"
 
 const MESSAGE_TYPES = {
     GAMESTATE: "gameState",
-    CARD_MOVE: "cardMove"
+    CARD_MOVE_HAND: "cardMoveHand",
+    CARD_MOVE_BATTLEFIELD: "cardMoveBattlefield",
 }
 
 class SocketIOAdapter {
@@ -28,9 +29,17 @@ class SocketIOAdapter {
         });
     }
 
-    moveCard(id, i, j) {
-        this.socket.emit(MESSAGE_TYPES.CARD_MOVE, {
-            id: id,
+    moveCardToHand(cardUuid, userId) {
+        this.socket.emit(MESSAGE_TYPES.CARD_MOVE_HAND, {
+            cardUuid: cardUuid,
+            userId: userId
+        })
+    }
+
+    moveCardToBattlefield(cardUuid, userId, i, j) {
+        this.socket.emit(MESSAGE_TYPES.CARD_MOVE_BATTLEFIELD, {
+            cardUuid: cardUuid,
+            userId: userId,
             i: i,
             j: j
         })

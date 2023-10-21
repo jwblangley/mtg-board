@@ -43,8 +43,13 @@ function setupSocketHandlers(socket) {
         const lobbyId = socket.handshake.query?.lobbyId
         console.log(`${userId} disconnected from lobby ${lobbyId}`)
     })
-    socket.on(MESSAGE_TYPES.CARD_MOVE, ({id, i, j}) => {
-        gameState.moveCard(id, i, j)
+
+    // Socket handlers
+    socket.on(MESSAGE_TYPES.CARD_MOVE_HAND, ({cardUuid, userId}) => {
+        gameState.moveCardToHand(cardUuid, userId)
+    })
+    socket.on(MESSAGE_TYPES.CARD_MOVE_BATTLEFIELD, ({cardUuid, userId, i, j}) => {
+        gameState.moveCardToBattlefield(cardUuid, userId, i, j)
     })
 }
 
