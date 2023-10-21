@@ -31,9 +31,10 @@ const Card = ({content, stackIndex, stackTotal, setSelectedCard, noStack}) => {
                 zIndex: `${stackIndex}`,
                 opacity: `${(isDragging ? 0.5 : 1) * (0.6 + 0.4 * (stackTotal === 1 ? 1 : (stackIndex/(stackTotal - 1))))}`,
                 border: `${isDragging ? "solid red 5px" : ""}`,
-                borderRadius: `${isDragging ? "12px" : ""}`
+                borderRadius: `${isDragging ? "12px" : ""}`,
+                position: noStack ? "initial" : "absolute"
             }}
-            className="card"
+            className="gameCard"
             onClick={clickHandler}
         >
             <img src={`${SERVER_ADDRESS}/card-image/${content.image}`} alt="card" width="100%" height="100%"></img>
