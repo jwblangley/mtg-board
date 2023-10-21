@@ -9,13 +9,9 @@ require("dotenv").config()
 const { GameState } = require("./gameState")
 const { parseDeck, uploadCards } = require("./deckManager")
 const { generateId } = require("./lobbyGeneration")
-const { MESSAGE_TYPES } = require("./constants")
-
-const BATTLEFIELD_WIDTH = 7
-const BATTLEFIELD_HEIGHT = 4
+const { MESSAGE_TYPES, BATTLEFIELD_WIDTH, BATTLEFIELD_HEIGHT } = require("./constants")
 
 const CARD_IMAGE_DIRECTORY = process.env["CARD_IMAGE_LOCATION"]
-
 
 const corsValues = {
     origin: process.env["CORS_ALLOW"]
@@ -50,6 +46,9 @@ function setupSocketHandlers(socket) {
     })
     socket.on(MESSAGE_TYPES.CARD_MOVE_BATTLEFIELD, ({cardUuid, userId, i, j}) => {
         gameState.moveCardToBattlefield(cardUuid, userId, i, j)
+    })
+    socket.on(MESSAGE_TYPES.CARD_MOVE_OTHER_BATTLEFIELD, ({cardUuid, userId}) => {
+        gameState.moveCardToOtherBattlefield(cardUuid, userId)
     })
 }
 

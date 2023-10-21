@@ -108,6 +108,7 @@
 .otherBattlefield {
     margin-bottom: 2vmin;
     cursor: pointer;
+    position: relative;
 }
 
 .topBar {

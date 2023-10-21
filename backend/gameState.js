@@ -1,7 +1,7 @@
 const { shuffleInPlace } = require("./deckManager")
 const { Position } = require("./position")
 
-const STARTING_DECK_SIZE = 7
+const { STARTING_DECK_SIZE , MAX_STACK_SIZE } = require("./constants")
 
 
 function generateEmptyBattlefield(width, height) {
@@ -11,7 +11,6 @@ function generateEmptyBattlefield(width, height) {
 function removeIndex(arr, i) {
     return [...arr.slice(0, i), ...arr.slice(i + 1)]
 }
-
 
 class GameState {
     constructor(lobbyId, publishStateUpdate, battlefieldWidth, battlefieldHeight) {
@@ -79,9 +78,13 @@ class GameState {
         this.moveCard(cardUuid, new Position(userId, Position.LOCATIONS.HAND, 0))
     }
 
-    moveCardToBattlefield(cardUuid, userId, i, j)
-    {
+    moveCardToBattlefield(cardUuid, userId, i, j) {
         this.moveCard(cardUuid, new Position(userId, Position.LOCATIONS.BATTLEFIELD, {i, j, stackIndex: 0}))
+    }
+
+    moveCardToOtherBattlefield(cardUuid, targetUserId) {
+        const newPos = this.findFreePosition(targetUserId)
+        this.moveCard(cardUuid, newPos)
     }
 
     moveCard(cardUuid, newPosition) {
@@ -111,16 +114,16 @@ class GameState {
         // Ignores highest granularity part of Position.index
         if (newPosition.location === Position.LOCATIONS.HAND)
         {
-            const oldHand = this.users.get(userId).hand
+            const oldHand = this.users.get(newPosition.userId).hand
             const newHand = [...oldHand, card]
-            this.users.get(userId).hand = newHand
+            this.users.get(newPosition.userId).hand = newHand
         }
         else if (newPosition.location === Position.LOCATIONS.BATTLEFIELD)
         {
             const {i, j, stackIndex} = newPosition.index
-            const oldCell = this.users.get(userId).battlefield[i][j]
+            const oldCell = this.users.get(newPosition.userId).battlefield[i][j]
             const newCell = [...oldCell, card]
-            this.users.get(userId).battlefield[i][j] = newCell
+            this.users.get(newPosition.userId).battlefield[i][j] = newCell
         }
         else
         {
@@ -156,6 +159,17 @@ class GameState {
             }
         }
         throw new Error(`Could not find card: ${cardUuid}`)
+    }
+
+    findFreePosition(userId) {
+        const battlefield = this.users.get(userId).battlefield
+        for (let i = 0; i < battlefield.length; i++) {
+            for (let j = 0; j < battlefield[i].length; j++) {
+                if (battlefield[i][j].length < 5) {
+                    return new Position(userId, Position.LOCATIONS.BATTLEFIELD, { i, j, stackIndex: 0 })
+                }
+            }
+        }
     }
 }
 
