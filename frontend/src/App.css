@@ -46,6 +46,7 @@
     overflow: scroll;
     display: inline-block;
     padding: 1em;
+    overflow-x: hidden;
 }
 
 .gameCard {
@@ -101,4 +102,9 @@
     text-align: center;
     position: relative;
     top: 50%;
+}
+
+.otherBattlefield {
+    margin-bottom: 2vmin;
+    cursor: pointer;
 }

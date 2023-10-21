@@ -13,13 +13,15 @@ const Cell = ({
     j,
     user,
     viewingUser,
-    setSelectedCard
+    setSelectedCard,
+    disabled
 }) => {
     let server = useContext(ServerContext)
+    const validDrop = user === viewingUser && content.length < STACK_MAX && !disabled
     const [{isOver}, drop] = useDrop(
         () => ({
-            accept: user === viewingUser && content.length < STACK_MAX ? DraggableTypes.CARD : [],
-            canDrop: () => user === viewingUser && content.length < STACK_MAX,
+            accept: validDrop ? DraggableTypes.CARD : [],
+            canDrop: () => validDrop,
             drop: (monitor) => {
                 server.current.moveCardToBattlefield(monitor.uuid, viewingUser, i, j)
             },
@@ -61,6 +63,7 @@ const Cell = ({
                 stackIndex={stackIndex}
                 stackTotal={content.length}
                 setSelectedCard={setSelectedCard}
+                disabled={disabled}
             />))}
         </div>
     )
@@ -71,7 +74,8 @@ const Row = ({
     i,
     user,
     viewingUser,
-    setSelectedCard
+    setSelectedCard,
+    disabled
 }) => {
     return (
         <div
@@ -88,6 +92,7 @@ const Row = ({
                 user={user}
                 viewingUser={viewingUser}
                 setSelectedCard={setSelectedCard}
+                disabled={disabled}
             />))}
         </div>
     )
@@ -98,7 +103,8 @@ const Battlefield = ({
     viewingUser,
     gameState,
     scale,
-    setSelectedCard
+    setSelectedCard,
+    disabled
 }) => {
     const content = gameState.users[viewingUser].battlefield
     return (
@@ -106,11 +112,18 @@ const Battlefield = ({
             className="battlefield"
             elevation={10}
             onClick={(e) => {
+                if (disabled) {
+                    return
+                }
                 // Hack to detect clicking on a card: the alt text of card image
                 if (e.target?.alt !== "card") {
                     setSelectedCard({})
                 }
             }}
+            style={disabled ? {
+                width: "auto",
+                height: "auto"
+            }: {}}
         >
             <div style={{
                 overflow: "hidden",
@@ -135,6 +148,7 @@ const Battlefield = ({
                         user={user}
                         viewingUser={viewingUser}
                         setSelectedCard={setSelectedCard}
+                        disabled={disabled}
                     />))}
                 </Paper>
             </div>

@@ -4,7 +4,7 @@ import { CARD_WIDTH, CARD_HEIGHT, STACK_OFFSET, STACK_MAX, DraggableTypes } from
 const SERVER_ADDRESS = process.env["REACT_APP_SERVER_ADDRESS"]
 
 
-const Card = ({content, stackIndex, stackTotal, setSelectedCard, noStack}) => {
+const Card = ({content, stackIndex, stackTotal, setSelectedCard, noStack, disabled}) => {
     const [{ isDragging }, drag] = useDrag(() => ({
         item: content,
         type: DraggableTypes.CARD,
@@ -16,6 +16,9 @@ const Card = ({content, stackIndex, stackTotal, setSelectedCard, noStack}) => {
 
 
     function clickHandler(e) {
+        if (disabled) {
+            return
+        }
         e.preventDefault()
         setSelectedCard(content)
     }

@@ -54,6 +54,8 @@ const App = () => {
               <OtherBattlefields
                 user={user}
                 gameState={gameState}
+                viewingUser={viewingUser}
+                setViewingUser={setViewingUser}
               />
             </div>
             <div className="fullWidth">
