@@ -11,6 +11,7 @@ import { ServerProvider } from './serverProvider';
 import DraggableCanvas from './draggable';
 import SelectedCard from './selectedCard';
 import MainMenu from './mainMenu';
+import TopBar from './topBar';
 
 
 const SERVER_ADDRESS = process.env["REACT_APP_SERVER_ADDRESS"]
@@ -41,6 +42,11 @@ const App = () => {
           propagateConfirmedLobby={setLobby}
           gameState={gameState}
         >
+          <TopBar
+            lobbyId={lobby}
+            user={user}
+            viewingUser={viewingUser}
+          />
           <DraggableCanvas>
             <div className="fullWidth">
               <SelectedCard card={selectedCard} />

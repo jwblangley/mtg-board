@@ -109,3 +109,16 @@
     margin-bottom: 2vmin;
     cursor: pointer;
 }
+
+.topBar {
+    width: 100vw;
+    height: 5vh;
+    border-bottom: 10px solid #4b5aad;
+    padding: 1vmin;
+    position: relative;
+}
+
+.topBar .MuiTypography-root {
+    display: inline;
+    margin-right: 2vmin;
+}
