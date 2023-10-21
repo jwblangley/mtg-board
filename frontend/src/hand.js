@@ -10,17 +10,18 @@ import { DraggableTypes } from './constants'
 
 
 const Hand = ({
-    cards,
-    currentUser,
+    gameState,
+    user,
+    viewingUser,
     setSelectedCard
 }) => {
     let server = useContext(ServerContext)
     const [{ isOver }, drop] = useDrop(
         () => ({
-            accept: DraggableTypes.CARD,
-            canDrop: () => true,
+            accept: user === viewingUser ? DraggableTypes.CARD : [],
+            canDrop: () => user === viewingUser,
             drop: (monitor) => {
-                server.current.moveCardToHand(monitor.uuid, currentUser)
+                server.current.moveCardToHand(monitor.uuid, viewingUser)
             },
             collect: (monitor) => ({
                 isOver: !!monitor.isOver(),
@@ -28,6 +29,8 @@ const Hand = ({
             })
         })
     )
+
+    const cards = gameState?.users?.[viewingUser]?.hand
 
     return (
         <Paper

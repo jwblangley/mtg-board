@@ -11,16 +11,17 @@ const Cell = ({
     content,
     i,
     j,
-    currentUser,
+    user,
+    viewingUser,
     setSelectedCard
 }) => {
     let server = useContext(ServerContext)
     const [{isOver}, drop] = useDrop(
         () => ({
-            accept: content.length === STACK_MAX ? [] : DraggableTypes.CARD,
-            canDrop: () => content.length < STACK_MAX,
+            accept: user === viewingUser && content.length < STACK_MAX ? DraggableTypes.CARD : [],
+            canDrop: () => user === viewingUser && content.length < STACK_MAX,
             drop: (monitor) => {
-                server.current.moveCardToBattlefield(monitor.uuid, currentUser, i, j)
+                server.current.moveCardToBattlefield(monitor.uuid, viewingUser, i, j)
             },
             collect: (monitor) => ({
                 isOver: !! monitor.isOver(),
@@ -68,7 +69,8 @@ const Cell = ({
 const Row = ({
     content,
     i,
-    currentUser,
+    user,
+    viewingUser,
     setSelectedCard
 }) => {
     return (
@@ -83,7 +85,8 @@ const Row = ({
                 content={cell}
                 i={i} j={j}
                 key={`battlefieldCell-${i}-${j}`}
-                currentUser={currentUser}
+                user={user}
+                viewingUser={viewingUser}
                 setSelectedCard={setSelectedCard}
             />))}
         </div>
@@ -92,12 +95,12 @@ const Row = ({
 
 const Battlefield = ({
     user,
-    currentUser,
+    viewingUser,
     gameState,
     scale,
     setSelectedCard
 }) => {
-    const content = gameState.users[user].battlefield
+    const content = gameState.users[viewingUser].battlefield
     return (
         <Paper
             className="battlefield"
@@ -129,7 +132,8 @@ const Battlefield = ({
                         content={row}
                         i={i}
                         key={`battlefieldRow-${i}`}
-                        currentUser={currentUser}
+                        user={user}
+                        viewingUser={viewingUser}
                         setSelectedCard={setSelectedCard}
                     />))}
                 </Paper>

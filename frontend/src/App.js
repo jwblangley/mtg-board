@@ -46,7 +46,7 @@ const App = () => {
               <SelectedCard card={selectedCard} />
               <Battlefield
                 user={user}
-                currentUser={user}
+                viewingUser={viewingUser}
                 gameState={gameState}
                 scale={battlefieldScale}
                 setSelectedCard={setSelectedCard}
@@ -59,8 +59,10 @@ const App = () => {
             <div className="fullWidth">
               <Library />
               <Hand
+                gameState={gameState}
+                user={user}
                 cards={gameState?.users?.[user]?.hand}
-                currentUser={user}
+                viewingUser={viewingUser}
                 setSelectedCard={setSelectedCard}
               />
             </div>
