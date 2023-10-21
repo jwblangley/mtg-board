@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { SnackbarProvider } from 'notistack';
 
 import Battlefield from "./battlefield"
+import OtherBattlefields from "./otherBattlefields"
 import Hand from "./hand"
 import Library from "./library"
 import { ServerProvider } from './serverProvider';
@@ -16,6 +17,7 @@ const SERVER_ADDRESS = process.env["REACT_APP_SERVER_ADDRESS"]
 
 const App = () => {
   const [user, setUser] = useState("")
+  const [viewingUser, setViewingUser] = useState("")
   const [lobby, setLobby] = useState("")
   const [battlefieldScale, setBattlefieldScale] = useState(0.5)
   const [gameState, setGameState] = useState({})
@@ -32,7 +34,10 @@ const App = () => {
     >
       <SnackbarProvider>
         <MainMenu
-          propagateConfirmedUser={setUser}
+          propagateConfirmedUser={u => {
+            setUser(u)
+            setViewingUser(u)
+          }}
           propagateConfirmedLobby={setLobby}
           gameState={gameState}
         >
@@ -45,6 +50,10 @@ const App = () => {
                 gameState={gameState}
                 scale={battlefieldScale}
                 setSelectedCard={setSelectedCard}
+              />
+              <OtherBattlefields
+                user={user}
+                gameState={gameState}
               />
             </div>
             <div className="fullWidth">
