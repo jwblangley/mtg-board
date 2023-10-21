@@ -34,6 +34,12 @@ const Hand = ({
             className="hand"
             elevation={10}
             ref={drop}
+            onClick={(e) => {
+                // Hack to detect clicking on a card: the alt text of card image
+                if (e.target?.alt !== "card") {
+                    setSelectedCard({})
+                }
+            }}
         >
             {isOver && (
                 <div
