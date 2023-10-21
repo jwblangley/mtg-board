@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
 import { useDrop } from 'react-dnd'
 
-import { Paper } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 
 
 import Card from "./card"
 import { ServerContext } from './serverProvider'
-import { DraggableTypes } from './constants'
+import { CARD_HEIGHT, CARD_WIDTH, DraggableTypes } from './constants'
 
 
 const Hand = ({
@@ -67,13 +67,31 @@ const Hand = ({
                         margin: "0 0.5vw"
                     }}
                 >
-                    <Card
-                        content={card}
-                        noStack
-                        stackIndex={1}
-                        stackTotal={1}
-                        setSelectedCard={setSelectedCard}
-                    />
+                    {user === viewingUser ? (
+                        <Card
+                            content={card}
+                            owner={viewingUser}
+                            viewer={user}
+                            noStack
+                            stackIndex={1}
+                            stackTotal={1}
+                            setSelectedCard={setSelectedCard}
+                        />
+                    ) : (
+                        <div
+                            className="emptyCard"
+                            style={{
+                                width: CARD_WIDTH,
+                                height: CARD_HEIGHT
+                            }}
+                        >
+                            <Typography
+                                variant="h5"
+                            >
+                                {`${viewingUser}'s hand`}
+                            </Typography>
+                        </div>
+                    )}
                 </div>
             ))}
         </Paper>

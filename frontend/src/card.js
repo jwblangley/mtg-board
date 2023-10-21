@@ -4,7 +4,16 @@ import { CARD_WIDTH, CARD_HEIGHT, STACK_OFFSET, STACK_MAX, DraggableTypes } from
 const SERVER_ADDRESS = process.env["REACT_APP_SERVER_ADDRESS"]
 
 
-const Card = ({content, stackIndex, stackTotal, setSelectedCard, noStack, disabled}) => {
+const Card = ({
+        content,
+        owner,
+        viewer,
+        stackIndex,
+        stackTotal,
+        setSelectedCard,
+        noStack,
+        disabled
+    }) => {
     const [{ isDragging }, drag] = useDrag(() => ({
         item: content,
         type: DraggableTypes.CARD,
@@ -12,6 +21,7 @@ const Card = ({content, stackIndex, stackTotal, setSelectedCard, noStack, disabl
             item: monitor.getItem(),
             isDragging: !!monitor.isDragging(),
         }),
+        canDrag: (monitor) => (owner === viewer && !disabled)
     }))
 
 
