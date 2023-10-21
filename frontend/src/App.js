@@ -18,7 +18,7 @@ const SERVER_ADDRESS = process.env["REACT_APP_SERVER_ADDRESS"]
 
 const App = () => {
   const [user, setUser] = useState("")
-  const [viewingUser, setViewingUser] = useState("")
+  const [userViewing, setViewingUser] = useState("")
   const [lobby, setLobby] = useState("")
   const [battlefieldScale, setBattlefieldScale] = useState(0.5)
   const [gameState, setGameState] = useState({})
@@ -45,14 +45,14 @@ const App = () => {
           <TopBar
             lobbyId={lobby}
             user={user}
-            viewingUser={viewingUser}
+            userViewing={userViewing}
           />
           <DraggableCanvas>
             <div className="fullWidth">
               <SelectedCard card={selectedCard} />
               <Battlefield
                 user={user}
-                viewingUser={viewingUser}
+                userViewing={userViewing}
                 gameState={gameState}
                 scale={battlefieldScale}
                 setSelectedCard={setSelectedCard}
@@ -60,7 +60,7 @@ const App = () => {
               <OtherBattlefields
                 user={user}
                 gameState={gameState}
-                viewingUser={viewingUser}
+                userViewing={userViewing}
                 setViewingUser={setViewingUser}
               />
             </div>
@@ -70,7 +70,7 @@ const App = () => {
                 gameState={gameState}
                 user={user}
                 cards={gameState?.users?.[user]?.hand}
-                viewingUser={viewingUser}
+                userViewing={userViewing}
                 setSelectedCard={setSelectedCard}
               />
             </div>

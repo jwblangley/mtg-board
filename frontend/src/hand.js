@@ -12,16 +12,16 @@ import { CARD_HEIGHT, CARD_WIDTH, DraggableTypes } from './constants'
 const Hand = ({
     gameState,
     user,
-    viewingUser,
+    userViewing,
     setSelectedCard
 }) => {
     let server = useContext(ServerContext)
     const [{ isOver }, drop] = useDrop(
         () => ({
-            accept: user === viewingUser ? DraggableTypes.CARD : [],
-            canDrop: () => user === viewingUser,
+            accept: user === userViewing ? DraggableTypes.CARD : [],
+            canDrop: () => user === userViewing,
             drop: (monitor) => {
-                server.current.moveCardToHand(monitor.uuid, viewingUser)
+                server.current.moveCardToHand(monitor.uuid, userViewing)
             },
             collect: (monitor) => ({
                 isOver: !!monitor.isOver(),
@@ -30,7 +30,7 @@ const Hand = ({
         })
     )
 
-    const cards = gameState?.users?.[viewingUser]?.hand
+    const cards = gameState?.users?.[userViewing]?.hand
 
     return (
         <Paper
@@ -67,10 +67,10 @@ const Hand = ({
                         margin: "0 0.5vw"
                     }}
                 >
-                    {user === viewingUser ? (
+                    {user === userViewing ? (
                         <Card
                             content={card}
-                            owner={viewingUser}
+                            owner={userViewing}
                             viewer={user}
                             noStack
                             stackIndex={1}
@@ -88,7 +88,7 @@ const Hand = ({
                             <Typography
                                 variant="h5"
                             >
-                                {`${viewingUser}'s hand`}
+                                {`${userViewing}'s hand`}
                             </Typography>
                         </div>
                     )}

@@ -10,7 +10,7 @@ import Battlefield from "./battlefield"
 const OtherBattlefield = ({
     gameState,
     user,
-    viewingUser,
+    userViewing,
     setViewingUser
 }) => {
     let server = useContext(ServerContext)
@@ -19,7 +19,7 @@ const OtherBattlefield = ({
             accept: DraggableTypes.CARD,
             canDrop: () => true,
             drop: (monitor) => {
-                server.current.moveCardToOtherBattlefield(monitor.uuid, viewingUser)
+                server.current.moveCardToOtherBattlefield(monitor.uuid, userViewing)
             },
             collect: (monitor) => ({
                 isOver: !!monitor.isOver(),
@@ -32,7 +32,7 @@ const OtherBattlefield = ({
         <div
             className="otherBattlefield"
             onClick={() => {
-                setViewingUser(viewingUser)
+                setViewingUser(userViewing)
             }}
             ref={drop}
         >
@@ -52,11 +52,11 @@ const OtherBattlefield = ({
                 />
             )}
             <Typography variant="h6">
-                {viewingUser}
+                {userViewing}
             </Typography>
             <Battlefield
                 user={user}
-                viewingUser={viewingUser}
+                userViewing={userViewing}
                 gameState={gameState}
                 scale={0.15}
                 setSelectedCard={null}
@@ -70,7 +70,7 @@ const OtherBattlefield = ({
 const OtherBattlefields = ({
     gameState,
     user,
-    viewingUser,
+    userViewing,
     setViewingUser
 }) => {
     return (
@@ -82,12 +82,12 @@ const OtherBattlefields = ({
                 e.nativeEvent.stopImmediatePropagation();
             }}
         >
-            {Object.keys(gameState.users).filter(u => u !== viewingUser).map(u => (
+            {Object.keys(gameState.users).filter(u => u !== userViewing).map(u => (
                 <OtherBattlefield
                     key={`other-battlefield-${u}`}
                     gameState={gameState}
                     user={user}
-                    viewingUser={u}
+                    userViewing={u}
                     setViewingUser={setViewingUser}
                 />
             ))}

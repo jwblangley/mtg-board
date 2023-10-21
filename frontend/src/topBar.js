@@ -4,7 +4,7 @@ import React from 'react'
 const TopBar = ({
     lobbyId,
     user,
-    viewingUser
+    userViewing
 }) => {
     return (
         <div className="topBar">
@@ -21,7 +21,7 @@ const TopBar = ({
                     {`User: ${user}`}
                 </Typography>
                 <Typography display="inline">
-                    {`Current board: ${viewingUser}`}
+                    {`Current board: ${userViewing}`}
                 </Typography>
             </div>
         </div>

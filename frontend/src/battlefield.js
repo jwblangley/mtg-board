@@ -12,18 +12,18 @@ const Cell = ({
     i,
     j,
     user,
-    viewingUser,
+    userViewing,
     setSelectedCard,
     disabled
 }) => {
     let server = useContext(ServerContext)
-    const validDrop = user === viewingUser && content.length < STACK_MAX && !disabled
+    const validDrop = user === userViewing && content.length < STACK_MAX && !disabled
     const [{isOver}, drop] = useDrop(
         () => ({
             accept: validDrop ? DraggableTypes.CARD : [],
             canDrop: () => validDrop,
             drop: (monitor) => {
-                server.current.moveCardToBattlefield(monitor.uuid, viewingUser, i, j)
+                server.current.moveCardToBattlefield(monitor.uuid, userViewing, i, j)
             },
             collect: (monitor) => ({
                 isOver: !! monitor.isOver(),
@@ -60,7 +60,7 @@ const Cell = ({
             {content.map((card, stackIndex) => (<Card
                 content={card}
                 key={card.uuid}
-                owner={viewingUser}
+                owner={userViewing}
                 viewer={user}
                 stackIndex={stackIndex}
                 stackTotal={content.length}
@@ -75,7 +75,7 @@ const Row = ({
     content,
     i,
     user,
-    viewingUser,
+    userViewing,
     setSelectedCard,
     disabled
 }) => {
@@ -92,7 +92,7 @@ const Row = ({
                 i={i} j={j}
                 key={`battlefieldCell-${i}-${j}`}
                 user={user}
-                viewingUser={viewingUser}
+                userViewing={userViewing}
                 setSelectedCard={setSelectedCard}
                 disabled={disabled}
             />))}
@@ -102,13 +102,13 @@ const Row = ({
 
 const Battlefield = ({
     user,
-    viewingUser,
+    userViewing,
     gameState,
     scale,
     setSelectedCard,
     disabled
 }) => {
-    const content = gameState.users[viewingUser].battlefield
+    const content = gameState.users[userViewing].battlefield
     return (
         <Paper
             className="battlefield"
@@ -148,7 +148,7 @@ const Battlefield = ({
                         i={i}
                         key={`battlefieldRow-${i}`}
                         user={user}
-                        viewingUser={viewingUser}
+                        userViewing={userViewing}
                         setSelectedCard={setSelectedCard}
                         disabled={disabled}
                     />))}
