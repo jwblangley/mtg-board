@@ -37,7 +37,7 @@ const App = () => {
           gameState={gameState}
         >
           <DraggableCanvas>
-            <div>
+            <div className="fullWidth">
               <SelectedCard card={selectedCard} />
               <Battlefield
                 user={user}
@@ -47,7 +47,7 @@ const App = () => {
                 setSelectedCard={setSelectedCard}
               />
             </div>
-            <div>
+            <div className="fullWidth">
               <Library />
               <Hand
                 cards={gameState?.users?.[user]?.hand}
