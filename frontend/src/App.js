@@ -51,6 +51,7 @@ const App = () => {
               <Library />
               <Hand
                 cards={gameState?.users?.[user]?.hand}
+                currentUser={user}
                 setSelectedCard={setSelectedCard}
               />
             </div>

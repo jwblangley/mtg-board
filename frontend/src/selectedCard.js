@@ -10,7 +10,7 @@ const SelectedCard = ({ card }) => {
         <div className="selectedCard">
             <img
                 alt="Card Preview"
-                src={!!card ? `${SERVER_ADDRESS}/card-image/${card.image}` : EMPTY_IMG}
+                src={!!card?.image ? `${SERVER_ADDRESS}/card-image/${card.image}` : EMPTY_IMG}
                 style={{
                     width: "100%",
                 }}

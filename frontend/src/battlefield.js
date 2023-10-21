@@ -12,7 +12,7 @@ const Cell = ({
     i,
     j,
     currentUser,
-    setSelectedCard={setSelectedCard}
+    setSelectedCard
 }) => {
     let server = useContext(ServerContext)
     const [{isOver}, drop] = useDrop(
