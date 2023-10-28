@@ -51,6 +51,8 @@
 
 .gameCard {
     cursor: pointer;
+    transition-duration: 0.3s;
+    transition-property: transform;
 }
 
 .selectedCard {
@@ -126,4 +128,5 @@
 
 .tapped {
     transform: rotate(15deg);
+    -webkit-transform: rotate(15deg);
 }
