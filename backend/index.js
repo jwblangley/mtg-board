@@ -109,18 +109,23 @@ app.post("/join-lobby", (req, res) => {
     }
 
     gameState = lobbyGameStateMap.get(lobbyId)
-    if (gameState.users.has(userId)) {
-        console.log(`${userId} rejoined lobby: ${lobbyId}`)
-        gameState.update()
-        res.json({joined: true})
-        return
-    }
     if (gameState.started) {
+        if (gameState.users.has(userId)) {
+            console.log(`${userId} rejoined lobby: ${lobbyId}`)
+            gameState.update()
+            res.json({joined: true})
+            return
+        }
+
         console.log(`New user: ${userId} denied entry to started lobby ${lobbyId}`)
         res.json({joined: false, reason: "New users cannot join started lobbies"})
         return
     }
 
+    if (gameState.users.has(userId)) {
+        res.json({joined: false, reason: `Username '${userId}' is already taken`})
+        return
+    }
     gameState.addUser(userId)
     res.json({joined: true})
 })
