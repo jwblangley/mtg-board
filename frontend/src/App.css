@@ -146,6 +146,10 @@
     padding: 3px 10px;
 }
 
+.topBar .MuiTextField-root {
+    top: -10px;
+}
+
 .tapped {
     transform: rotate(15deg);
     -webkit-transform: rotate(15deg);

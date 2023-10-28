@@ -46,6 +46,8 @@ const App = () => {
             lobbyId={lobby}
             user={user}
             userViewing={userViewing}
+            battlefieldScale={battlefieldScale}
+            setBattlefieldScale={setBattlefieldScale}
           />
           <DraggableCanvas>
             <div className="fullWidth">
