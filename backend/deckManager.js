@@ -37,7 +37,7 @@ function parseDeck(deckConfig) {
             break
         }
 
-        const parts = lines[i].split(/\s/)
+        const parts = lines[i].trim().split(/\s/)
         if (parts.length < 2) {
             return {deck: undefined, reason: `Bad format on line ${i + 1}.`}
         }
