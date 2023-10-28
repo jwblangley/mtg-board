@@ -18,6 +18,7 @@ const SelectedCard = ({ card }) => {
                 ) : (
                     <div className="emptyCard">
                         <Typography
+                            className="centeredInCard"
                             variant="h5"
                         >
                             No card selected

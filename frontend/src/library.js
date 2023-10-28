@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
-import { Paper, Typography } from '@mui/material';
+import { Paper, Typography, Button } from '@mui/material';
 
+import { ServerContext } from './serverProvider'
 import { CARD_WIDTH, CARD_HEIGHT } from "./constants";
-
 
 
 const Library = ({
@@ -11,8 +11,8 @@ const Library = ({
     user,
     userViewing
 }) => {
-
     const library = gameState?.users?.[userViewing]?.library
+    let server = useContext(ServerContext)
 
     return(
         <Paper
@@ -33,8 +33,17 @@ const Library = ({
                 <Typography
                     variant="h7"
                 >
-                    {`${library.length} card${library.length > 1 ? "s" : ""} remaining`}
+                    {`${library.length} card${library.length !== 1 ? "s" : ""} remaining`}
                 </Typography>
+                <Button
+                    variant="contained"
+                    disabled={user !== userViewing || library.length === 0}
+                    onClick={() => {
+                        server.current.drawCard(userViewing)
+                    }}
+                >
+                    Draw card
+                </Button>
             </div>
         </Paper>
     )

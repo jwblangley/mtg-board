@@ -20,7 +20,7 @@ const App = () => {
   const [user, setUser] = useState("")
   const [userViewing, setViewingUser] = useState("")
   const [lobby, setLobby] = useState("")
-  const [battlefieldScale, setBattlefieldScale] = useState(0.5)
+  const [battlefieldScale, setBattlefieldScale] = useState(0.45)
   const [gameState, setGameState] = useState({})
   const [selectedCard, setSelectedCard] = useState()
 

@@ -86,6 +86,7 @@ const Hand = ({
                             }}
                         >
                             <Typography
+                                className="centeredInCard"
                                 variant="h5"
                             >
                                 {`${userViewing}'s hand`}

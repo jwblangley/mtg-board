@@ -194,6 +194,17 @@ class GameState {
         )
         this.update()
     }
+
+    drawCard(userId) {
+        const library = this.users.get(userId).library
+        if (library.length <= 0) {
+            return
+        }
+        const card = library[library.length - 1]
+        this.users.get(userId).hand = [...this.users.get(userId).hand, card]
+        this.users.get(userId).library = library.slice(0, library.length - 1)
+        this.update()
+    }
 }
 
 module.exports = {

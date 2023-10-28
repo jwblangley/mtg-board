@@ -7,6 +7,7 @@ const MESSAGE_TYPES = {
     CARD_MOVE_OTHER_BATTLEFIELD: "cardMoveOtherBattlefield",
     TOGGLE_TAP_CARD: "toggleTapCard",
     UNTAP_ALL: "untapAll",
+    DRAW_CARD: "drawCard",
 }
 
 class SocketIOAdapter {
@@ -63,6 +64,12 @@ class SocketIOAdapter {
 
     untapAll(userId) {
         this.socket.emit(MESSAGE_TYPES.UNTAP_ALL ,{
+            userId: userId
+        })
+    }
+
+    drawCard(userId) {
+        this.socket.emit(MESSAGE_TYPES.DRAW_CARD ,{
             userId: userId
         })
     }

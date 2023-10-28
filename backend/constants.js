@@ -5,6 +5,7 @@ const MESSAGE_TYPES = {
     CARD_MOVE_OTHER_BATTLEFIELD: "cardMoveOtherBattlefield",
     TOGGLE_TAP_CARD: "toggleTapCard",
     UNTAP_ALL: "untapAll",
+    DRAW_CARD: "drawCard",
 }
 
 const BATTLEFIELD_WIDTH = 7

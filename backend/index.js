@@ -33,7 +33,7 @@ function publishStateUpdate(lobbyId, gameState) {
 
 const lobbyGameStateMap = new Map()
 
-function setupSocketHandlers(socket) {
+function setupSocketHandlers(socket, gameState) {
     socket.on("disconnect", () => {
         const userId = socket.handshake.query?.userId
         const lobbyId = socket.handshake.query?.lobbyId
@@ -56,6 +56,9 @@ function setupSocketHandlers(socket) {
     socket.on(MESSAGE_TYPES.UNTAP_ALL, ({userId}) => {
         gameState.untapAll(userId)
     })
+    socket.on(MESSAGE_TYPES.DRAW_CARD, ({userId}) => {
+        gameState.drawCard(userId)
+    })
 }
 
 io.on("connection", (socket => {
@@ -63,11 +66,11 @@ io.on("connection", (socket => {
     const lobbyId = socket.handshake.query?.lobbyId
 
     socket.join(lobbyId)
-    setupSocketHandlers(socket)
-
     console.log(`${userId} connected to lobby ${lobbyId}`)
 
     gameState = lobbyGameStateMap.get(lobbyId)
+    setupSocketHandlers(socket, gameState)
+
     if (!!gameState) {
         gameState.update()
     }
