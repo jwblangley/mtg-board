@@ -50,6 +50,9 @@ function setupSocketHandlers(socket) {
     socket.on(MESSAGE_TYPES.CARD_MOVE_OTHER_BATTLEFIELD, ({cardUuid, userId}) => {
         gameState.moveCardToOtherBattlefield(cardUuid, userId)
     })
+    socket.on(MESSAGE_TYPES.TOGGLE_TAP_CARD, ({cardUuid}) => {
+        gameState.toggleTapCard(cardUuid)
+    })
 }
 
 io.on("connection", (socket => {

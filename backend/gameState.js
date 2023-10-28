@@ -170,6 +170,19 @@ class GameState {
                 }
             }
         }
+        return null
+    }
+
+    toggleTapCard(cardUuid) {
+        const { card, position } = this.findCard(cardUuid)
+        card.tapped = ! card.tapped
+        if (position.location !== Position.LOCATIONS.BATTLEFIELD) {
+            console.warn(`Trying to toggleTap card=${card.uuid} in ${position.location}`)
+            return
+        }
+        const { i, j, stackIndex } = position.index
+        this.users.get(position.userId).battlefield[i][j][stackIndex] = card
+        this.update()
     }
 }
 

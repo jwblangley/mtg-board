@@ -47,7 +47,7 @@ const Card = ({
                 borderRadius: `${isDragging ? "12px" : ""}`,
                 position: noStack ? "initial" : "absolute"
             }}
-            className="gameCard"
+            className={`gameCard ${content.tapped ? "tapped" : ""}`}
             onClick={clickHandler}
         >
             <img src={`${SERVER_ADDRESS}/card-image/${content.image}`} alt="card" width="100%" height="100%"></img>

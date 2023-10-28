@@ -56,7 +56,8 @@ function parseDeck(deckConfig) {
         for (j = 0; j < num; j++) {
             const card = {
                 uuid: crypto.randomUUID(),
-                image: image
+                image: image,
+                tapped: false
             }
 
             if (deck.deck.length === 0) {

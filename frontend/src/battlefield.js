@@ -105,10 +105,21 @@ const Battlefield = ({
     userViewing,
     gameState,
     scale,
+    selectedCard,
     setSelectedCard,
     disabled
 }) => {
     const content = gameState.users[userViewing].battlefield
+    let server = useContext(ServerContext)
+    const selectAndTap = card => {
+        console.log(card)
+        console.log(selectedCard)
+        if (selectedCard?.uuid === card.uuid) {
+            server.current.toggleTapCard(card.uuid)
+        }
+        setSelectedCard(card)
+    }
+
     return (
         <Paper
             className="battlefield"
@@ -149,7 +160,7 @@ const Battlefield = ({
                         key={`battlefieldRow-${i}`}
                         user={user}
                         userViewing={userViewing}
-                        setSelectedCard={setSelectedCard}
+                        setSelectedCard={selectAndTap}
                         disabled={disabled}
                     />))}
                 </Paper>

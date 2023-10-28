@@ -55,6 +55,7 @@ const App = () => {
                 userViewing={userViewing}
                 gameState={gameState}
                 scale={battlefieldScale}
+                selectedCard={selectedCard}
                 setSelectedCard={setSelectedCard}
               />
               <OtherBattlefields

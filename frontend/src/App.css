@@ -123,3 +123,7 @@
     display: inline;
     margin-right: 2vmin;
 }
+
+.tapped {
+    transform: rotate(15deg);
+}

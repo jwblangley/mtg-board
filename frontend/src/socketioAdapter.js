@@ -4,7 +4,8 @@ const MESSAGE_TYPES = {
     GAMESTATE: "gameState",
     CARD_MOVE_HAND: "cardMoveHand",
     CARD_MOVE_BATTLEFIELD: "cardMoveBattlefield",
-    CARD_MOVE_OTHER_BATTLEFIELD: "cardMoveOtherBattlefield"
+    CARD_MOVE_OTHER_BATTLEFIELD: "cardMoveOtherBattlefield",
+    TOGGLE_TAP_CARD: "toggleTapCard"
 }
 
 class SocketIOAdapter {
@@ -50,6 +51,12 @@ class SocketIOAdapter {
         this.socket.emit(MESSAGE_TYPES.CARD_MOVE_OTHER_BATTLEFIELD, {
             cardUuid: cardUuid,
             userId: targetUserId
+        })
+    }
+
+    toggleTapCard(cardUuid) {
+        this.socket.emit(MESSAGE_TYPES.TOGGLE_TAP_CARD ,{
+            cardUuid: cardUuid
         })
     }
 }
