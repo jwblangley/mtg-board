@@ -53,6 +53,9 @@ function setupSocketHandlers(socket) {
     socket.on(MESSAGE_TYPES.TOGGLE_TAP_CARD, ({cardUuid}) => {
         gameState.toggleTapCard(cardUuid)
     })
+    socket.on(MESSAGE_TYPES.UNTAP_ALL, ({userId}) => {
+        gameState.untapAll(userId)
+    })
 }
 
 io.on("connection", (socket => {

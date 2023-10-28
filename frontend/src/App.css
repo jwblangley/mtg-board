@@ -115,7 +115,7 @@
 
 .topBar {
     width: 100vw;
-    height: 5vh;
+    height: 5.5vh;
     border-bottom: 10px solid #4b5aad;
     padding: 1vmin;
     position: relative;
@@ -123,7 +123,13 @@
 
 .topBar .MuiTypography-root {
     display: inline;
-    margin-right: 2vmin;
+    margin: 0 1vmin;
+}
+
+.topBar .MuiButton-root {
+    display: inline;
+    margin: 0 1vmin;
+    padding: 3px 10px;
 }
 
 .tapped {

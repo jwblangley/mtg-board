@@ -184,6 +184,16 @@ class GameState {
         this.users.get(position.userId).battlefield[i][j][stackIndex] = card
         this.update()
     }
+
+    untapAll(userId) {
+        const battlefield = this.users.get(userId).battlefield
+        this.users.get(userId).battlefield = battlefield.map(
+            row => row.map(stack => stack.map(
+                card => ({ ...card, tapped: false })
+            ))
+        )
+        this.update()
+    }
 }
 
 module.exports = {
