@@ -66,13 +66,16 @@ const App = () => {
               />
             </div>
             <div className="fullWidth">
-              <Library />
               <Hand
                 gameState={gameState}
                 user={user}
-                cards={gameState?.users?.[user]?.hand}
                 userViewing={userViewing}
                 setSelectedCard={setSelectedCard}
+                />
+              <Library
+                gameState={gameState}
+                user={user}
+                userViewing={userViewing}
               />
             </div>
           </DraggableCanvas>

@@ -34,7 +34,7 @@
 
 .battlefield {
     width: 65vw;
-    height: 70vh;
+    height: calc(90vh - 208px);
     overflow: scroll;
     display: inline-block;
     padding: 1em;
@@ -42,7 +42,7 @@
 
 .otherBattlefields {
     width: 15vw;
-    height: 70vh;
+    height: calc(90vh - 208px);
     overflow: scroll;
     display: inline-block;
     padding: 1em;
@@ -58,7 +58,7 @@
 .selectedCard {
     display: inline-block;
     width: 20vw;
-    height: 70vh;
+    height: calc(90vh - 208px);
     padding: 1em;
     overflow-y: scroll;
 }
@@ -90,6 +90,20 @@
 
 .hand {
     position: relative;
+    display: inline-block;
+    width: 70vw;
+    overflow-x: scroll;
+    white-space: nowrap;
+    padding-top: 1vmin;
+}
+
+.library {
+    position: absolute;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    right: 0;
+    padding: 1vmin;
 }
 
 .emptyCard {
