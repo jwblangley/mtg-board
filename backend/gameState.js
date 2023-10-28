@@ -91,6 +91,14 @@ class GameState {
         const { card, position: oldPosition } = this.findCard(cardUuid)
         const userId = oldPosition.userId
 
+        // Don't overcram battlefield cells
+        if (newPosition.location === Position.LOCATIONS.BATTLEFIELD) {
+            const { i, j, stackIndex } = newPosition.index
+            if (this.users.get(newPosition.userId).battlefield[i][j].length >= MAX_STACK_SIZE) {
+                return
+            }
+        }
+
         // Remove from old position
         if (oldPosition.location === Position.LOCATIONS.HAND)
         {

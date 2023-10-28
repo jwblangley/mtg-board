@@ -17,11 +17,12 @@ const Cell = ({
     disabled
 }) => {
     let server = useContext(ServerContext)
-    const validDrop = user === userViewing && content.length < STACK_MAX && !disabled
     const [{isOver}, drop] = useDrop(
         () => ({
-            accept: validDrop ? DraggableTypes.CARD : [],
-            canDrop: () => validDrop,
+            accept: ((user === userViewing) && !disabled) ? DraggableTypes.CARD : [],
+            canDrop: () => {
+                return ((user === userViewing) && !disabled)
+            },
             drop: (monitor) => {
                 server.current.moveCardToBattlefield(monitor.uuid, userViewing, i, j)
             },
